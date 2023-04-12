@@ -1,6 +1,10 @@
 FPGA（Field Programmable Gate Array 现场可编程门阵列）是一种可以重构电路的芯片，是一种硬件可重构的体系结构。它是在PAL（可编程阵列逻辑）、GAL（通用阵列逻辑）等可编程器件的基础上进一步发展的产物，是作为专用集成电路（[asic](http://bbs.eetop.cn/forum-69-1.html)）领域中的一种半定制电路而出现的，既解决了定制电路的不足，又克服了原有可编程器件门电路数有限的缺点。
 
+FPGA (Field Programmable Gate Array) , a kind of chip that could reconstruct its circuit, is a hardware configurable architectre. It is the product of the further development of programable devices such as PAL (Programmable Array Logic) , GAL (General Array Logic), and it appears as a semi-custom circuit in the field of ASIC (Application Specific Integrated Circuit). It overcomed not only the shortcoming of custom circuit, but also the disadvantages of previous programmable devices that has the limited number of gate circuit.
+
 鉴于其可编辑，更灵活；产品上市时间短，节省了ASIC流片周期；避免一次性工程费用，用量较小时具有成本优势等特点，FPGA现已广泛应用于原型验证、[通信](http://bbs.eetop.cn/forum-262-1.html)、汽车电子、工业控制、航空航天、数据中心等领域。
+
+
 
 一、FPGA的技术发展历程
 
