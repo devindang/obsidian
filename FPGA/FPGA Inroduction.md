@@ -1,16 +1,16 @@
 FPGA（Field Programmable Gate Array 现场可编程门阵列）是一种可以重构电路的芯片，是一种硬件可重构的体系结构。它是在PAL（可编程阵列逻辑）、GAL（通用阵列逻辑）等可编程器件的基础上进一步发展的产物，是作为专用集成电路（[asic](http://bbs.eetop.cn/forum-69-1.html)）领域中的一种半定制电路而出现的，既解决了定制电路的不足，又克服了原有可编程器件门电路数有限的缺点。
 
-FPGA (Field Programmable Gate Array) , a kind of chip that could reconstruct its circuit, is a hardware configurable architectre. It is the product of the further development of programable devices such as PAL (Programmable Array Logic) , GAL (General Array Logic), and it appears as a semi-custom circuit in the field of ASIC (Application Specific Integrated Circuit). It overcomed not only the shortcoming of custom circuit, but also the disadvantages of previous programmable devices that has the limited number of gate circuit.
+FPGA (Field Programmable Gate Array) , a kind of chip that could reconstruct its circuit, is a hardware configurable architectre. It is the product of the further development of programable devices such as PAL (Programmable Array Logic) , GAL (General Array Logic), and it appears as a semi-custom circuit in the field of ASIC (Application Specific Integrated Circuit). It overcomed not only the shortcoming of custom circuit, but also the disadvantages of previous devices that has the limited number of gate circuit.
 
-鉴于其可编辑，更灵活；产品上市时间短，节省了ASIC流片周期；避免一次性工程费用，用量较小时具有成本优势等特点，FPGA现已广泛应用于原型验证、[通信](http://bbs.eetop.cn/forum-262-1.html)、汽车电子、工业控制、航空航天、数据中心等领域。
+鉴于其可编辑，更灵活；产品上市时间短，节省了ASIC流片周期；避免一次性工程费用，用量较小时具有成本优势等特点，FPGA现已广泛应用于原型验证、通信、汽车电子、工业控制、航空航天、数据中心等领域。
 
-
+Given the characteristics of editable, flexible, short time to market, saving the tape-out cycle of ASIC, avoiding the one-time proccessing costs, and low cost when used in small quantities, FPGA is now widly applied in prototype verification, communication, vehicle electronics, aerospace, and data center.
 
 一、FPGA的技术发展历程
 
 FPGA技术从发明到现在已经经历了三十多年的发展历程，其核心价值是可编程性和灵活性。随着工艺技术、系统设计和应用创新的不断进步，FPGA技术也在不断创新和集成，实现了从逻辑器件到系统平台的转变。
 
-在近十多年间，随着5G、[人工智能](http://bbs.eetop.cn/forum-318-1.html)、云计算等新技术的快速发展和广泛应用，对于FPGA等可编程逻辑器件的需求也越来越大。
+在近十多年间，随着5G、人工智能、云计算等新技术的快速发展和广泛应用，对于FPGA等可编程逻辑器件的需求也越来越大。
 
 为了解决系统设计问题，FPGA越来越多地整合系统模块：高速收发器、存储器、[dsp](http://bbs.eetop.cn/forum-14-1.html)处理单元和完整处理器。同时还进一步集成了重要控制功能：比特流加密与验证、混合信号处理、[电源](http://bbs.eetop.cn/forum-116-1.html)与温度监控以及电源管理等。这些特性在Xilinx的Zynq系列和Intel的Arria系列中得到了充分体现。同时，器件也推动了工具的发展。系统FPGA需要高效的系统编程语言，现可利用OpenCL和C语言以类似软件的流程来编程。FPGA正在越来越多地取代传统上ASIC，在小批量、个性化的产品市场方面具有明显优势。
 
