@@ -11,7 +11,7 @@ This flow offers the following ==advantages==:
 -   Reduces compile time for subsequent synthesis runs. Only the runs you specify are resynthesized, leaving the other runs as is.
 -   Ensures stability when design changes are made. Only the runs that include changes are resynthesized.
 
-The disadvantage of this flow is that 
+The ==disadvantage== of this flow is that 
 - it requires additional setup. 
 - You must be careful in selecting which modules to set as out-of-context synthesis modules. 
 - Any additional XDC constraints must be defined separately and must only be used for the out-of-context synthesis runs. 

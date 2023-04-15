@@ -1,62 +1,55 @@
-Reset Timing Check
+#reserved
+## Synchronous
 
-两种时序检查：Recovery检查（setup），Removal检查（hold）。（此部分预留）
+Implementation in FPGA:
 
-https://res.craft.do/user/full/3bf92654-d7a3-01d8-4d74-2a11bd838937/doc/1625199c-d66b-41f7-b781-ec0c04a49f97/d8ec5640-be0d-401e-882b-bff1e3ccddd5
+1. Gating Data
 
-同步复位
+![[gating_data.png]]
 
-在FPGA中的实现方式：
+2. LAB control signal
 
-（1）门控数据
+Altera provides LAB control signals, a LAB contains a synchronous reset control signal, and two asynchronous reset control signals. (The situation in Xilinx is not clear)
 
-https://res.craft.do/user/full/3bf92654-d7a3-01d8-4d74-2a11bd838937/doc/1625199c-d66b-41f7-b781-ec0c04a49f97/038dc7fc-4200-487e-b2e9-1b11cc2e7b37
+RTL Architecture:
 
-（2）LAB块控制信号
+![[sync_rst.png]]
 
-Altera中提供了LAB块控制信号，一个LAB中包含一个同步复位控制信号，以及2个异步复位控制信号。（Xilinx中的情况不清楚）
+==Advantages== of synchronous reset:
 
-https://res.craft.do/user/full/3bf92654-d7a3-01d8-4d74-2a11bd838937/doc/1625199c-d66b-41f7-b781-ec0c04a49f97/ed4e5948-7248-4316-bec4-cfada339df15
+- It is generally possible to ensure that the circuit is ==100% synchronous==.
+- Ensuring that resets only occur on ==active clock edges== can be used as a means of filtering out ==glitches==.
 
-同步复位优点：
+==Disadvantag== of synchronous reset:
 
-一般能够确保电路是百分之百同步的。
+- The effective duration of the reset signal must be ==longer== than the clock period, so that it can be recognized by the system and reset. Besides, factors such as ==clock skew==, combinational logic ==path delay==, and ==reset delay== must also be considered.
+- Since the flip-flops in most manufacturers' target libraries only have asynchronous reset ports, if synchronous reset is used, more logic ==resources== will be consumed.
+- Affects the data arrival time of the register due to insertion into the ==data path==.
 
-确保复位只发生在有效时钟沿，可以作为过滤掉毛刺的手段
+## Asynchronous Reset
 
-同步复位缺点：
+Flip-Flop provides an asynchronous reset pin.
 
-复位信号的有效时长必须大于时钟周期，才能真正被系统识别并完成复位。同时还要考虑如：时钟偏移、组合逻辑路径延时、复位延时等因素。
+![[async_rst_pin.png]]
 
-由于大多数的厂商目标库内的触发器都只有异步复位端口，采用同步复位的话，就会耗费较多的逻辑资源。
 
-由于插入到了数据路径，影响寄存器的数据到达时间。
+==Advantages== of asynchronous reset:
 
-异步复位
+- The asynchronous reset signal is easy to identify, and it is very convenient to use the global reset (allocate ==global wiring resources== for the asynchronous reset, and connect to the reset pins of almost all registers).
+- Reset is ==immediate, independent of clocks, and does not affect the data path==.
+- Because most of the flip-flops in the vendor's target library have an asynchronous reset port, logic ==resources== can be saved.
 
-FF提供了异步复位引脚。
+==Disadvantag== of synchronous reset:
 
-https://res.craft.do/user/full/3bf92654-d7a3-01d8-4d74-2a11bd838937/doc/1625199c-d66b-41f7-b781-ec0c04a49f97/74504586-850f-4cea-af56-db5368dfaf04
+- Reset signals are susceptible to glitches
+- When the reset removal time is just within the metastable state window, it is impossible to determine whether the current reset state is 1 or 0, which will lead to a metastable state. (Reset withdrawal time not meeting reset recovery time will lead to ==metastability==.)
 
-异步复位优点：
+## Asynchronous Reset Synchronous Release
 
-异步复位信号识别方便，而且可以很方便的使用全局复位（给异步复位分配全局布线资源，连接到几乎所有寄存器的复位引脚）。
+Inserting a first-level register on the basis of synchronous reset can solve the metastability problem caused by asynchronous reset. When the asynchronous reset is released (Removal), the first-level register generates a logic '1' for the synchronization of the second-level synchronous register. Therefore, the output of the register always completes the release of the reset on the edge of the clock.
 
-复位是立即发生的，不依赖于时钟，不会影响数据路径。
+RTL codes:
 
-由于大多数的厂商目标库内的触发器都有异步复位端口，可以节约逻辑资源。
-
-异步复位缺点：
-
-复位信号容易受到毛刺的影响。
-
-复位结束时刻恰在亚稳态窗口内时，无法决定现在的复位状态是1还是0，会导致亚稳态。（复位撤离时间不满足复位恢复时间会导致亚稳态。）
-
-异步复位同步释放
-
-在同步复位的基础上插入一级寄存器，可以解决异步复位带来的亚稳态问题。在异步复位释放（撤离）（Removal）时，第一级寄存器产生逻辑‘1’，用于第二级同步寄存器的同步。因此寄存器的输出总是在时钟的边沿完成复位的释放。
-
-RTL代码：
 ```verilog
 module Reset_test( 
 	input clk, 
@@ -80,26 +73,51 @@ end
 endmodule
 ```
 
-https://res.craft.do/user/full/3bf92654-d7a3-01d8-4d74-2a11bd838937/doc/1625199c-d66b-41f7-b781-ec0c04a49f97/2dc903b5-91f7-4595-adca-393e8cf95cb9
+![[async_rst_sync_removal.png]]
 
-优点：
+==Advantages==:
 
-这种方法保证了复位的撤离时刻是同步的，不存在Removal检查不通过的情况，因此也可以滤除毛刺。
+This method retains the advantages of asynchronous reset, and also ensures that the evacuation moment of reset is synchronous, and there is no case where the Removal check fails, so glitches can also be filtered out.
 
-？？
+==Disadvantages==:
 
-缺点：
+## Reset for PLL
 
-PLL复位
+For PLL, pay attention to the ==*locked*== signal when using asynchronous reset and synchronous release. When the clock is not locked (synchronous), the PLL cannot output the clock, so the register cannot be used to synchronize the reset signal, and this circuit will never be able to jump out of reset.
 
-对于PLL，使用异步复位同步释放时要注意locked信号，在时钟未锁定（同步时），PLL是无法输出时钟的，因此也就无法用寄存器进行复位信号的同步，这个电路将永远无法跳出复位。
+The correct way to deal with it is to use the locked signal of the PLL as the synchronization flag of the register, and then release the reset signal after the PLL clock is locked (the output clock of the PLL will be restored before the output of the locked signal, so there will be no possibility that the program cannot be triggered to enter the process in the case).
 
-正确的处理方法是使用PLL的locked信号作为寄存器的同步标志，在PLL时钟锁定后再进行复位信号的释放（PLL的输出时钟会在locked信号输出之前恢复，因此不会出现程序无法触发进入到process中的情况）。
+```verilog
+module Reset_test( 
+	input clk, 
+	input rst_nin, 
+	output reg rst_nout 
+); 
 
-module Reset_test( input clk, input rst_nin, output reg rst_nout ); reg rst_mid; always@(posedge clk or negedge rst_nin) begin if(!rst_nin) begin rst_mid <= 0; rst_nout <= 0; end else if(locked) begin rst_mid <= 1; rst_nout <= rst_mid; end end endmodule
+reg rst_mid; 
 
-推荐的复位方法
+always@(posedge clk or negedge rst_nin) begin 
+	if(!rst_nin) begin 
+		rst_mid <= 0; 
+		rst_nout <= 0; 
+	end 
+	else if(locked) begin 
+		rst_mid <= 1; 
+		rst_nout <= rst_mid; 
+	end 
+end 
 
-https://res.craft.do/user/full/3bf92654-d7a3-01d8-4d74-2a11bd838937/doc/1625199c-d66b-41f7-b781-ec0c04a49f97/678abd78-9c95-497e-bdaa-89edcc5c5576
+endmodule
+```
 
-外部异步复位使用同步释放的方式当作全局复位信号，同时这个信号分配个各个时钟域，每个时钟域内使用该信号进行异步复位同步释放。
+## Recommended Reset Methodology
+
+![[global_rst.png]]
+
+The ==external== asynchronous reset uses a synchronous release method as a ==global== reset signal, and this signal is allocated to each clock domain, and each clock domain uses this signal for asynchronous reset synchronous release.
+
+## Reset Timing Check
+
+Two timing check：Recovery (setup), Removal (hold). (#Reserved)
+
+![[rst_check.png]]
