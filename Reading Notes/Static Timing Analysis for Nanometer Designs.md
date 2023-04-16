@@ -126,7 +126,26 @@ I the input transition time and output load correspond to a table entry, it's tr
 
 #### 3.2.3 Threshold Specifications and Slew Derating
 
-The ==slew== values are based upon the measurement thresholds specified in the library. Most of the previous generation libraries (0.25$\mu m$ or older) used 10% and 90% as measurement thresholds for slew or transition time.
+The ==slew== values are based upon the measurement thresholds specified in the library. Most of the previous generation libraries (0.25$\mu m$ or older) used 10% and 90% as measurement ==thresholds== for slew or transition time.
 
 > The slew thresholds are chosen to correspond to the ==linear portion== of the waveform.
+
+In the new generation libraries, the portion where the actual waveform is mostly linear is typically between 30% and 70% points, so the ==slew derating== is introduced to calculate the equivalent 10% to 90% point. (because the transition times were previously measured between 10% and 90%) In this case, the slew derating is 0.5. ((70-30)/(90-10))
+
+Here is an example:
+
+```
+/* Threshold definitions */ 
+slew_lower_threshold_pct_fall : 30.0; 
+slew_upper_threshold_pct_fall : 70.0; 
+slew_lower_threshold_pct_rise : 30.0; 
+slew_upper_threshold_pct_rise : 70.0; 
+input_threshold_pct_fall : 50.0; 
+input_threshold_pct_rise : 50.0; 
+output_threshold_pct_fall : 50.0; 
+output_threshold_pct_rise : 50.0; 
+slew_derate_from_library : 0.5;
+```
+
+However, if the `slew_derate_from_library` is undefined, the actual transion times are specified as 30% to 70%.
 
