@@ -410,21 +410,13 @@ There are a number of convenient shorthands for commonly used character sets/
 regular expressions:
 
 |Shorthand|Description|
-
 |:----:|----|
-
 |.|Any character except new line|
-
 |\w|Matches alphanumeric characters: `[a-zA-Z0-9_]`|
-
 |\W|Matches non-alphanumeric characters: `[^\w]`|
-
 |\d|Matches digits: `[0-9]`|
-
 |\D|Matches non-digits: `[^\d]`|
-
 |\s|Matches whitespace characters: `[\t\n\f\r\p{Z}]`|
-
 |\S|Matches non-whitespace characters: `[^\s]`|
 
 ## 4. Lookarounds
@@ -448,15 +440,10 @@ by the `$` character. These are the lookarounds that are used in regular
 expressions:
 
 |Symbol|Description|
-
 |:----:|----|
-
 |?=|Positive Lookahead|
-
 |?!|Negative Lookahead|
-
 |?<=|Positive Lookbehind|
-
 |?<!|Negative Lookbehind|
 
 ### 4.1 Positive Lookahead
@@ -637,21 +624,22 @@ possible. We can use `?` to match in a lazy way, which means the match should be
 
 ## Additional Example
 
-* *正整数*: `^\d+$`
-* *负整数*: `^-\d+$`
-* *手机国家号*: `^+?[\d\s]{3,}$`
-* *手机号*: `^+?[\d\s]+(?[\d\s]{10,}$`
-* *整数*: `^-?\d+$`
-* *用户名*: `^[\w\d_.]{4,16}$`
-* *数字和英文字母*: `^[a-zA-Z0-9]*$`
-* *数字和应为字母和空格*: `^[a-zA-Z0-9 ]*$`
-* *密码*: `^(?=^.{6,}$)((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.*$`
-* *邮箱*: `^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})*$`
-* *IP4 地址*: `^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))*$`
-* *纯小写字母*: `^([a-z])*$`
-* *纯大写字母*: `^([A-Z])*$`
+* *Positive Integer*: `^\d+$`
+* *Negative Integer*: `^-\d+$`
+* *Phone Country Number*: `^+?[\d\s]{3,}$`
+* *Phone Number*: `^+?[\d\s]+(?[\d\s]{10,}$`
+* *Integer*: `^-?\d+$`
+* *Username*: `^[\w\d_.]{4,16}$`
+* *Numbers and Letters*: `^[a-zA-Z0-9]*$`
+* *Numbers, Letters and Space*: `^[a-zA-Z0-9 ]*$`
+* *Password*: `^(?=^.{6,}$)((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.*$`
+* *Email*: `^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})*$`
+* *IP4 Address*: `^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))*$`
+* *Lower Case Letter*: `^([a-z])*$`
+* *Upper Case Letter*: `^([A-Z])*$`
 * *URL*: `^(((http|https|ftp):\/\/)?([[a-zA-Z0-9]\-\.])+(\.)([[a-zA-Z0-9]]){2,4}([[a-zA-Z0-9]\/+=%&_\.~?\-]*))*$`
-* *VISA 信用卡号*: `^(4[0-9]{12}(?:[0-9]{3})?)*$`
-* *日期 (MM/DD/YYYY)*: `^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2}$`
-* *日期 (YYYY/MM/DD)*: `^(19|20)?[0-9]{2}[- /.](0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])$`
-* *MasterCard 信用卡号*: `^(5[1-5][0-9]{14})*$`
+* *VISA Credit Card*: `^(4[0-9]{12}(?:[0-9]{3})?)*$`
+* *Date (MM/DD/YYYY)*: `^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2}$`
+* *Date (YYYY/MM/DD)*: `^(19|20)?[0-9]{2}[- /.](0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])$`
+* *MasterCard Credit Card*: `^(5[1-5][0-9]{14})*$`
+

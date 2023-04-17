@@ -189,9 +189,9 @@ For synchronous outputs of a flip-flop, such as pins Q or QN, there is the follo
 
 ![[timing_arc_check.png]]
 
-#### Setup and Hold Checks
+#### 3.4.1 Setup and Hold Checks
 
-#### Negative Values in Setup or Hold Checks
+##### Negative Values in Setup or Hold Checks
 
 The setup and hold values for timing check can be negative. it's acceptable normally when the path from the pin of flip-flop to the latch point of data is longer than the clock path. In that case, it implies that the data pin of the flip-flop can change ahead of the clock pin and still meet the hold timing check.
 
@@ -207,5 +207,109 @@ If the setup (hold) contains a negative value, the hold (setup) must be sufficie
 
 > The ==setup plus hold== time is the width of the region where the data signal is required to be steady.
 
-A negative hold time is helpful for a scan data pin. This gives flexibility in terms of clock skew and can eliminate the need for almost all buffer insertion for fixing hold violations in scan mode (see [[DFT#Scan Mode]])
+A negative hold time is helpful for a ==scan data== pin. This gives flexibility in terms of clock skew and can eliminate the need for almost all buffer insertion for fixing hold violations in scan mode. 
+
+Scan mode is the one in which flip-flops are tied serially forming a scan chain - output of flip-flop is typically connected to the scan data input pin of the next flip-flop in series; these connections are for testability (see [[DFT#Scan Mode]])
+
+#### 3.4.2 Asynchronous Checks
+
+Similar to setup and hold check, there are constraint checks for governing the asynchronous pins, which are denoted as Recovery and Removal.
+
+##### Recovery and Removal
+
+##### Pulse Width Checks
+
+##### Example for Recovery, Removal, and Pulse Width Checks
+
+```
+pin(CDN) {
+	direction : input;
+	capacitance : 0.002236;
+	. . .
+	timing() {
+		related_pin : "CDN";
+		timing_type : min_pulse_width;
+		fall_constraint(width_template_3x1) { /*low pulse check*/
+			index_1 ("  0.032, 0.504, 0.788"); /* Input transition */
+			values ( /* 0.032  0.504 0.788 */ \
+					   "0.034, 0.060, 0.377");
+		}
+	}
+	timing() {
+		related_pin : "CK";
+		timing_type : recovery_rising;
+		rise_constraint(recovery_template_3x3) { /* CDN rising */
+			index_1 ("0.032, 0.504, 0.788"); /* Data transition */
+			index_2 ("0.032, 0.504, 0.788"); /* Clock transition */
+			values( /*     0.032   0.504  0.788 */ \
+			 /* 0.032 */ "-0.198, -0.122, 0.187", \
+			 /* 0.504 */ "-0.268, -0.157, 0.124", \
+			 /* 0.788 */ "-0.490, -0.219, -0.069");
+		}
+	}
+	timing() {
+		related_pin : "CK";
+		timing_type : removal_rising;
+		rise_constraint(removal_template_3x3) { /* CDN rising */
+			index_1 ("0.032, 0.504, 0.788"); /* Data transition */
+			index_2 ("0.032, 0.504, 0.788"); /* Clock transition */
+			values( /*    0.032  0.504  0.788 */ \
+			 /* 0.032 */ "0.106, 0.167, 0.548", \
+			 /* 0.504 */ "0.221, 0.381, 0.662", \
+			 /* 0.788 */ "0.381, 0.456, 0.778");
+		}
+	}
+}
+```
+
+In this case,
+- `timing_type` is asserted by min_pulse_width, which checks both high pulse and low pulse width. It can also be asserted by min_low_pulse_width or min_high_pulse_width, which only checks low and high pulse width, separately.
+- The recovery and removal checks are with respect to the clock pin CK.
+
+#### 3.4.3 Propagation Delay
+
+The ==propagation delay== of a sequential cell is from the ==active edge of the clock== to a ==rising or falling== edge on the output
+
+Here is an example of a propagation delay arc for a ==negative edge-triggered flip-flop==, from clock pin CKN to output Q.
+
+This is a ==non-unate timing arc== as the active edge of the clock can cause either a rising or a falling edge on the output Q. Here is the delay table:
+
+```
+timing() {
+	related_pin : "CKN";
+	timing_type : falling_edge;
+	timing_sense : non_unate;
+	cell_rise(delay_template_3x3) {
+		index_1 ("0.1, 0.3, 0.7"); /* Clock transition */
+		index_2 ("0.16, 0.35, 1.43"); /* Output capacitance */
+		values ( /* 0.16    0.35    1.43 */ \
+		 /* 0.1 */ "0.0513, 0.1537, 0.5280", \
+		 /* 0.3 */ "0.1018, 0.2327, 0.6476", \
+		 /* 0.7 */ "0.1334, 0.2973, 0.7252");
+	}
+	...
+}
+```
+
+A rising edge-triggered flip-flop will specify rising_edge as its `timing_type`.
+
+```
+timing() {
+	related_pin : "CKP";
+	timing_type : rising_edge;
+	timing_sense : non_unate;
+	cell_rise(delay_template_3x3) {
+		. . .
+	}
+	. . .
+}
+```
+
+### 3.5 State-Dependent Model
+
+In many combination blocks, the timing arc between input pins and output pins depends on the state of other pins in the block, it can be positive unate, negative unate, or both positive unate and negative unate.
+
+An example is *xor* or *xnor* cell, where the timing arc of an input pint depends on the other one. Such cell models are referred as ==state-dependent model==.
+
+
 
