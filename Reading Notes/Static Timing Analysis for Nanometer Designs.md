@@ -170,7 +170,7 @@ A general timing arc of sequential cells can be expressed as below.
 Where,
 -   D: Data input pin used to input data to be stored in a register or flip-flop.
 -   SI: Serial data input pin used to input serial data to be stored in a shift register.
--   SE: Enable input pin used to control whether the output of a register or flip-flop is valid.
+-   SE: Enable input pin used to control whether the output of a register or flip-flop is valid. (Maybe ==Scan Enable==?)
 -   CK: Clock input pin used to control the timing of data transfer in a register or flip-flop.
 -   CDN: Asynchronous clear input pin used to clear the data in a register or flip-flop.
 -   Q: Data output pin used to output the data stored in a register or flip-flop.
@@ -311,5 +311,106 @@ In many combination blocks, the timing arc between input pins and output pins de
 
 An example is *xor* or *xnor* cell, where the timing arc of an input pint depends on the other one. Such cell models are referred as ==state-dependent model==.
 
+Consider an *xor* cell with two input pin A1 and A2, and the output pin Z. The timing arc of the path from A1 to Z is positive unate when A2 is logic-0, and when the input A2 is logic-1, the path from A1 to Z is negative unate.
+
+These two timing models are specified using ==state-dependent model==, here is an example of the *xor* cell.
+
+The timing model from A1 to Z when A2 is logic-0 is specified as follows:
+
+```
+pin (Z) {  
+	direction : output; 
+	max_capacitance : 0.0842; 
+	function : "(A1^A2)"; 
+	timing() {
+		related_pin : "A1"; 
+		when : "!A2";  
+		sdf_cond : "A2 == 1'b0";
+		timing_sense : positive_unate; 
+		cell_rise(delay_template_3x3) {
+			index_1 ("0.0272, 0.0576, 0.1184"); /* Input slew */ 
+			index_2 ("0.0102, 0.0208, 0.0419"); /* Output load */ 
+			values( \
+				"0.0581, 0.0898, 0.2791", \ 
+				"0.0913, 0.1545, 0.2806", \ 
+				"0.0461, 0.0626, 0.2838");
+		}
+		... 
+	}
+	...
+}
+```
+
+Similarly, the timing model from A1 to Z when A2 is logic-1 is specified as follows:
+
+```
+timing() {  
+	related_pin : "A1";  
+	when : "A2";  
+	sdf_cond : "A2 == 1'b1"; 
+	timing_sense : negative_unate; 
+	cell_fall(delay_template_3x3) {
+		index_1 ("0.0272, 0.0576, 0.1184"); 
+		index_2 ("0.0102, 0.0208, 0.0419"); 
+		values( \
+			"0.0784, 0.1019, 0.2269", \ 
+			"0.0943, 0.1177, 0.2428", \ 
+			"0.0997, 0.1796, 0.2620");
+	}
+	... 
+}
+```
+
+The state-dependent condition is specified using the ==when condition==.
+
+State-dependent models are also used for various of timing arcs such as Scan Mode testing in DFT. There is an example for scan flip-flop using state-dependent model for hold constraint.
+
+In this case, two sets of timing models are specified - one for scan enable pin SE active, and the other for SE inactive.
+
+```
+pin (D) { 
+	...
+	timing() {  
+		related_pin : "CK";  
+		timing_type : hold_rising;  
+		when : "!SE"; 
+		fall_constraint(hold_template_3x3) {
+			index_1("0.08573, 0.2057, 0.3926"); 
+			index_2("0.08573, 0.2057, 0.3926"); 
+			values("-0.05018, -0.02966, -0.00919",\
+				   "-0.0703, -0.05008, -0.0091",\ 
+				   "-0.1407, -0.1206, -0.1096");
+		}
+		... 
+	}
+}
+```
+
+> **The state-dependent model applying order**
+> If the state-dependent model do not cover the condition of the cell, the timing from non-state-dependent model will be ultilized.
+
+For example, if there is a hold constraint specified by only one `when` condition for SE at logic-0, and no separate state-dependent model is specified for logic-1. In such scenario, the hold constraint from ==non-state-dependent model== is used. However, if there is no non-state-dependent model for hold constraints, there will *not* be any active hold constraints!!!
+
+State-dependent model can also be specified for any other attributes in the timing library. For example,
+- Power
+- Leakage power
+- Transition time
+- Rise delays & fall delays
+- Timing constraint
+
+```
+leakage_power() { 
+	when : "A1 !A2"; 
+	value : 259.8;
+} 
+leakage_power() {
+	when : "A1 A2";
+	value : 282.7; 
+}
+```
+
+### 3.6 Interface Timing Model for a Black Box
+
+The timing arc for the IO interface of a black box (an arbitrary module or block).
 
 
