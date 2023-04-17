@@ -207,4 +207,5 @@ If the setup (hold) contains a negative value, the hold (setup) must be sufficie
 
 > The ==setup plus hold== time is the width of the region where the data signal is required to be steady.
 
-A negative hold time is helpful for a scan data pin. This gives flexibility in terms of clock skew and can eliminate the need for almost all buffer insertion for fixing hold violations in scan mode
+A negative hold time is helpful for a scan data pin. This gives flexibility in terms of clock skew and can eliminate the need for almost all buffer insertion for fixing hold violations in scan mode (see [[DFT#Scan Mode]])
+
