@@ -130,7 +130,7 @@ The ==slew== values are based upon the measurement thresholds specified in the l
 
 > The slew thresholds are chosen to correspond to the ==linear portion== of the waveform.
 
-In the new generation libraries, the portion where the actual waveform is mostly linear is typically between 30% and 70% points, so the ==slew derating== is introduced to calculate the equivalent 10% to 90% point. (because the transition times were previously measured between 10% and 90%) In this case, the slew derating is 0.5. ((70-30)/(90-10))
+In the new generation libraries, the portion where the actual waveform is mostly linear is typically between 30% and 70% points, so the ==slew derating== is introduced to extrapolate the equivalent 10% to 90% point. (because the transition times were previously measured between 10% and 90%) In this case, the slew derating is 0.5. ((70-30)/(90-10))
 
 Here is an example:
 
@@ -149,3 +149,62 @@ slew_derate_from_library : 0.5;
 
 However, if the `slew_derate_from_library` is undefined, the actual transion times are specified as 30% to 70%.
 
+![[slew_derate.png]]
+
+### 3.3 Timing Models - Combinational Cells
+
+#### Timing Arc for *And* Cell
+
+For a two input *and* cell, both the timing arcs for the cell are *positive_unate*, which denotes that an input pin rise corresponds to an output pin rise, and vice versa.
+
+
+> [!ERROR]
+> reserved
+
+### 3.4 Timing Models - Sequential Cells
+
+A general timing arc of sequential cells can be expressed as below.
+
+![[seq_arc.png]]
+
+Where,
+-   D: Data input pin used to input data to be stored in a register or flip-flop.
+-   SI: Serial data input pin used to input serial data to be stored in a shift register.
+-   SE: Enable input pin used to control whether the output of a register or flip-flop is valid.
+-   CK: Clock input pin used to control the timing of data transfer in a register or flip-flop.
+-   CDN: Asynchronous clear input pin used to clear the data in a register or flip-flop.
+-   Q: Data output pin used to output the data stored in a register or flip-flop.
+-   QN: Complementary output pin used to output the signal that is the complement of the Q output.
+
+For synchronous inputs, such as pin D, SI, SE, there are the following timing arcs:
+- Setup check arc (rising and falling)
+- Hold check arc (rising and falling)
+
+For asynchronous inputs, such as pin CDN (async reset pin), there are the following timing arcs:
+- Recovery check arc
+- Removal check arc
+
+For synchronous outputs of a flip-flop, such as pins Q or QN, there is the following timing arc:
+- CK-to-output propagation delay arc (rising and falling)
+
+![[timing_arc_check.png]]
+
+#### Setup and Hold Checks
+
+#### Negative Values in Setup or Hold Checks
+
+The setup and hold values for timing check can be negative. it's acceptable normally when the path from the pin of flip-flop to the latch point of data is longer than the clock path. In that case, it implies that the data pin of the flip-flop can change ahead of the clock pin and still meet the hold timing check.
+
+The image below illustrate the occasion of negative hold check values.
+
+![[neg_timing_check.png]]
+
+==The setup values of a flip-flop can also be negative==. This means that at the pins of the flip-flop, the data can change after the clock pin and still meet the setup time check.
+
+But the setup check value and hold check value cannot be negative both. 
+
+If the setup (hold) contains a negative value, the hold (setup) must be sufficiently positive so that the ==setup plus hold== is a positive quantity.
+
+> The ==setup plus hold== time is the width of the region where the data signal is required to be steady.
+
+A negative hold time is helpful for a scan data pin. This gives flexibility in terms of clock skew and can eliminate the need for almost all buffer insertion for fixing hold violations in scan mode
