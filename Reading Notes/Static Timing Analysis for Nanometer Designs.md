@@ -601,4 +601,34 @@ The output switching power is ==independent== of the cell type, and depend upon 
 
 The internal switching power is consumpted when there is activity at the input or output of the cell. An input pin transition can cause the output to switch and thus results in internal switching power. For example, An ==*inverter*== cell consumes power whenever the input switches (rise or fall transition).
 
+```
+pin (Z1) {
+	. . .
+	power_down_function : "!VDD + VSS";
+	related_power_pin : VDD;
+	related_ground_pin : VSS;
+	internal_power () {
+		related_pin : "A";
+		power (template_2x2) {
+			index_1 ("0.1, 0.4"); /* Input transition */
+			index_2 ("0.05, 0.1"); /* Output capacitance */
+			values ( /* 0.05  0.1 */ \
+			/* 0.1 */ "0.045, 0.050", \
+			/* 0.4 */ "0.055, 0.056");
+		}
+	}
+}
+```
+
+This case described the internal power model from the input pin A the output pin Z1 of the cell. The value in the table represents the internal energy dissipated in the cell at each switching (rise or fall).
+
+The units of the index are normally derived from other units in the library. Typically, voltage is in volts (V), capacitance is in picofarads (pF), and this map to energy in picojoules (pJ).
+
+Switching power can be dissipated even when the outputs or the internal state does not have a transition.  A common example is the clock drive the *CLK* pin of a FF toggles.
+
+> It's important that the value in the CLK -> Q specification tables ==DO NOT== contains the contribution due to the CLK internal power comsumption when the output Q does not switch.
+
+The above guideline refers to consistency of usage of power tables by the application tool and ensures that the internal power specified due to clock input is not double-counted during power calculation.
+
+
 
