@@ -17,7 +17,7 @@ The attribute of a cell would be
 
 ### 3.1 Pin Capacitance
 
-The pin capacitance describe the capacitance of the cell inputs and specify only for cell inputs, not for outputs, the cell outputs capacitance im most cell libraries is 0. 
+The pin capacitance describe the capacitance of the cell inputs and specify only for cell inputs, not for outputs, the cell outputs capacitance in most cell libraries is 0. 
 
 ```
 pin (INP1) {
@@ -413,4 +413,116 @@ leakage_power() {
 
 The timing arc for the IO interface of a black box (an arbitrary module or block).
 
+The timing model of a black box can be expressed as follows:
+
+![[io_model.png]]
+
+Where the timing arc contains the following categories:
+
+- ==*Input to output combinational arc*== : This corresponds to a direct combinational path from input to output, where in this case, check FIN to FOUT;
+- ==*Input sequential arc*== : This is described as setup or hold time for the input connected to a D-pin of a flip-flop, where in this case, check DIN with respect to ACLK;
+- ==*Asynchronous input arc*== : This is similar to recovery and removal timing constraint for a input asynchronos pin of a flip-flop, where in this case, check ARST connected to the asynchronous clear pin of UFF0;
+- ==*Output sequential arc*== : This is similar to the output propagation timing for the clock to output connected to Q of a flip-flop, where in this case, check the path from BCLK to the output port DOUT.
+
+In summary, the timing arc of a black box can be the following:
+
+- Input to output timing arcs for combinational logic paths.
+- Setup and hold timing arcs from the synchronous inputs to the related clock pins.
+- Recovery and removal timing arcs for the asynchronous inputs to the related clock pins.
+- ==Output propagation delay== from clock pins to the output pins.
+
+### 3.7 Advanced Models
+
+#### Effective Capacitance
+
+NLDM represent the ==delay== or ==output transition time== arcs based upon the ==input transition time== and ==output load capacitance==, discard the presense of ==interconnect resistance==.
+
+The delay calculation tool retrofit the NLDM models with ==effective capacitance== which has the same delay at the output of the cell as the cell with RC interconnect.
+
+#### Receiver Pin Capacitance
+
+The receiver pin capacitance corresponds to the ==input pin capacitance== specified for NLDM models.
+
+There is another advanced models named CCS, which allow applying different receiver pin capacitance at different portions of the transitioning waveform. Due to ==Miller effect== from the input devices within the cell, the receiver pin capacitance value varies at different points on the transitioning waveform.
+
+The capacitance is thus modeled differently in the initial (leading) portion versus the trailing portion of the waveform.
+
+The receiver pin capacitance can either be specified in ==PIN== level or ==Timing Arc== level.
+
+PIN level:
+
+```
+pin (IN) {
+	. . .
+	receiver_capacitance1_rise ("Lookup_table_4") {
+	index_1: ("0.1, 0.2, 0.3, 0.4"); /* Input transition */
+	values("0.001040, 0.001072, 0.001074, 0.001085");
+}
+```
+
+Timing Arc level:
+
+```
+pin (OUT) {
+	. . .
+	timing () {
+		related_pin : "IN" ;
+		. . .
+		receiver_capacitance1_rise ("Lookup_table_4x4") {
+			index_1("0.1, 0.2, 0.3, 0.4"); /* Input transition */
+			index_2("0.01, 0.2, 0.4, 0.8"); /* Output capacitance */
+			values("0.001040 , 0.001072 , 0.001074 , 0.001075", \
+				"0.001148 , 0.001150 , 0.001152 , 0.001153", \
+				"0.001174 , 0.001172 , 0.001172 , 0.001172", \
+				"0.001174 , 0.001171 , 0.001177 , 0.001174");
+		}
+		. . .
+	}
+	. . .
+}
+```
+
+The above example specifies the model for *receiver_capacitance1_rise*, the library include similar definitions for *receiver_capacitance2_rise*, *receiver_capacitance1_fall*, *receiver_capacitance2_fall* specifications.
+
+| Capacitance type | Edge | Transition |
+| -- | -- | --|
+| Receiver_capacitance1_rise | Rising | Leading portion of transition |
+| Receiver_capacitance1_fall | Falling | Leading portion of transition |
+| Receiver_capacitance2_rise | Rising | Trailing portion of transition |
+| Receiver_capacitance2_fall | Falling | Trailing portion of transition |
+
+#### Output Current for CCS
+
+In the CCS model, the non-linear timing is represented in terms of ==output current==. The output current is specified for different combination of ==input transition time== and ==output capacitance==.
+
+Essentially, the waveform in CCS model refers to output current values specified as a function of time. 
+
+```
+pin (OUT) {
+	. . .
+	timing () {
+		related_pin : "IN" ;
+		. . .
+		output_current_fall () {
+			vector ("LOOKUP_TABLE_1x1x5") {
+				reference_time : 5.06; /* Time of input crossing
+					threshold */
+				index_1("0.040"); /* Input transition */
+				index_2("0.900"); /* Output capacitance */
+				index_3("5.079e+00, 5.093e+00, 5.152e+00,
+						5.170e+00, 5.352e+00");/* Time values */
+				/* Output charging current: */
+				values("-5.784e-02, -5.980e-02, -5.417e-02,
+						-4.257e-02, -2.184e-03");
+			}
+			. . .
+		}
+		. . .
+	}
+	. . .
+}
+```
+
+-  *reference_time*: attribute refers to the time when the input waveform crosses the delay threshold. 
+- *index_1* and *index_2*: can have only one value each.
 
