@@ -1,17 +1,25 @@
 {
 	"nodes":[
-		{"type":"text","text":"BUS","id":"69d0b9792dbb6eb9","x":-140,"y":-200,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"Job Skills","id":"aa60562589cac33f","x":-640,"y":140,"width":250,"height":60,"color":"6"},
-		{"type":"text","text":"Comm Algorithm","id":"91cd19ddc3331e1d","x":-140,"y":-40,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"[[FPGA Inroduction| FPGA]]","id":"2ce9146d664d28b7","x":-140,"y":110,"width":250,"height":60,"color":"1"},
-		{"type":"text","text":"SOC","id":"64c688a9f0368a72","x":-140,"y":240,"width":250,"height":60,"color":"6"},
-		{"type":"text","text":"Miscellaneous","id":"3448833466d84a17","x":-140,"y":400,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"Xilinx Vivado","id":"952833ea31a58249","x":200,"y":170,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"Special Topics","id":"7f4fa7756c35e215","x":200,"y":50,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"Reset","id":"f8679a644f22741e","x":540,"y":-40,"width":250,"height":60,"color":"4"},
 		{"type":"text","text":"CDC","id":"30c4d7dcd4a684b8","x":540,"y":50,"width":250,"height":60,"color":"1"},
 		{"type":"text","text":"[[Xilinx Design Constraint | XDC]]","id":"43bf8ede83ea4291","x":540,"y":140,"width":250,"height":60,"color":"6"},
-		{"type":"text","text":"[[Xilinx Vivado Skills | Vivado Skills]]","id":"6ee9cd59349b8eb3","x":540,"y":240,"width":250,"height":60,"color":"6"}
+		{"type":"text","text":"[[Xilinx Vivado Skills | Vivado Skills]]","id":"6ee9cd59349b8eb3","x":540,"y":240,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"SOC设计方法与实现","id":"487329a9b81b421d","x":200,"y":340,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"硬件架构的艺术","id":"f2709ea66618aa8b","x":200,"y":460,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"SOC","id":"64c688a9f0368a72","x":-140,"y":400,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"Comm Algorithm","id":"91cd19ddc3331e1d","x":-140,"y":-120,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"BUS","id":"69d0b9792dbb6eb9","x":-140,"y":-280,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"AMBA","id":"8f04ae2535cc3981","x":200,"y":-280,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"Filter Design","id":"6d436ff3c4952b62","x":200,"y":-120,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"Miscellaneous","id":"3448833466d84a17","x":-140,"y":800,"width":250,"height":60,"color":"6"},
+		{"id":"ed76728bb2b9c440","x":-140,"y":620,"width":250,"height":60,"color":"6","type":"text","text":"Digital IC"},
+		{"type":"text","text":"back end","id":"615b23012b29ef23","x":200,"y":680,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"front end","id":"ea33c732114cd231","x":200,"y":560,"width":250,"height":60,"color":"6"},
+		{"id":"94f27f3d83616212","x":540,"y":680,"width":250,"height":60,"color":"1","type":"text","text":"STA"}
 	],
 	"edges":[
 		{"id":"0836815cc701bc8b","fromNode":"aa60562589cac33f","fromSide":"right","toNode":"69d0b9792dbb6eb9","toSide":"left"},
@@ -24,6 +32,13 @@
 		{"id":"5da31f9012bec96a","fromNode":"2ce9146d664d28b7","fromSide":"right","toNode":"7f4fa7756c35e215","toSide":"left"},
 		{"id":"99705ee076c2bb5c","fromNode":"2ce9146d664d28b7","fromSide":"right","toNode":"952833ea31a58249","toSide":"left"},
 		{"id":"66460a241b9854fd","fromNode":"952833ea31a58249","fromSide":"right","toNode":"43bf8ede83ea4291","toSide":"left"},
-		{"id":"85ab08a9add2536d","fromNode":"952833ea31a58249","fromSide":"right","toNode":"6ee9cd59349b8eb3","toSide":"left"}
+		{"id":"85ab08a9add2536d","fromNode":"952833ea31a58249","fromSide":"right","toNode":"6ee9cd59349b8eb3","toSide":"left"},
+		{"id":"c40dd0c261317897","fromNode":"64c688a9f0368a72","fromSide":"right","toNode":"487329a9b81b421d","toSide":"left"},
+		{"id":"9be4fcb77c8359c2","fromNode":"91cd19ddc3331e1d","fromSide":"right","toNode":"6d436ff3c4952b62","toSide":"left"},
+		{"id":"e979fd13d8db39ef","fromNode":"69d0b9792dbb6eb9","fromSide":"right","toNode":"8f04ae2535cc3981","toSide":"left"},
+		{"id":"3424f68cf0d08e9e","fromNode":"64c688a9f0368a72","fromSide":"right","toNode":"f2709ea66618aa8b","toSide":"left"},
+		{"id":"82a8fcded15f075b","fromNode":"ed76728bb2b9c440","fromSide":"right","toNode":"ea33c732114cd231","toSide":"left"},
+		{"id":"e0bc8cbf43f840d0","fromNode":"ed76728bb2b9c440","fromSide":"right","toNode":"615b23012b29ef23","toSide":"left"},
+		{"id":"0679df6035fd890a","fromNode":"615b23012b29ef23","fromSide":"right","toNode":"94f27f3d83616212","toSide":"left"}
 	]
 }

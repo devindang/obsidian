@@ -439,11 +439,11 @@ NLDM represent the ==delay== or ==output transition time== arcs based upon the =
 
 The delay calculation tool retrofit the NLDM models with ==effective capacitance== which has the same delay at the output of the cell as the cell with RC interconnect.
 
-#### Receiver Pin Capacitance
+#### 3.7.1 Receiver Pin Capacitance
 
 The receiver pin capacitance corresponds to the ==input pin capacitance== specified for NLDM models.
 
-There is another advanced models named CCS, which allow applying different receiver pin capacitance at different portions of the transitioning waveform. Due to ==Miller effect== from the input devices within the cell, the receiver pin capacitance value varies at different points on the transitioning waveform.
+There is another advanced models named CCS (composite current source), which allow applying different receiver pin capacitance at different portions of the transitioning waveform. Due to ==Miller effect== from the input devices within the cell, the receiver pin capacitance value varies at different points on the transitioning waveform.
 
 The capacitance is thus modeled differently in the initial (leading) portion versus the trailing portion of the waveform.
 
@@ -491,7 +491,7 @@ The above example specifies the model for *receiver_capacitance1_rise*, the libr
 | Receiver_capacitance2_rise | Rising | Trailing portion of transition |
 | Receiver_capacitance2_fall | Falling | Trailing portion of transition |
 
-#### Output Current for CCS
+#### 3.7.2 Output Current for CCS
 
 In the CCS model, the non-linear timing is represented in terms of ==output current==. The output current is specified for different combination of ==input transition time== and ==output capacitance==.
 
@@ -525,4 +525,80 @@ pin (OUT) {
 
 -  *reference_time*: attribute refers to the time when the input waveform crosses the delay threshold. 
 - *index_1* and *index_2*: can have only one value each.
+
+#### 3.7.3 Models for Crosstalk Noise Analysis #reserved 
+
+CCS models for crosstalk noice (glitch) are described as CCSN (CCS Noise) models.
+
+CCSN models are represented for different ==CCBs== (Channel Connected Blocks).
+
+What is a CCB? 
+
+> - The CCB refers to the ==source-drain== channel connected portion of a cell. For example, single stage cells such as an ==*inverter*==, ==*nand*== and ==*nor*== cells contain only one CCB - the entire cell is connected through using one channel connection region. 
+> - Multi-stage cells such as ==*and*== cells, or ==*or*== cells, contain multiple CCBs.
+
+```
+pin (OUT) {
+	. . .
+	timing () {
+		related_pin : "IN1";
+		. . .
+		ccsn_first_stage() { /* First stage CCB */
+			is_needed : true;
+			stage_type : both; /*CCB contains pull-up and pull-down*/
+			is_inverting : true;
+			miller_cap_rise : 0.8;
+			miller_cap_fall : 0.5;
+			dc_current (ccsn_dc) {
+				index_1 ("-0.9, 0, 0.5, 1.35, 1.8"); /* Input voltage */
+				index_2 ("-0.9, 0, 0.5, 1.35, 1.8"); /* Output voltage*/
+				values ( \
+					"1.56, 0.42, . . ."); /* Current at output pin */
+			}
+			. . .
+			output_voltage_rise () {
+				vector (ccsn_ovrf) {
+					index_1 ("0.01"); /* Rail-to-rail input transition */
+					index_2 ("0.001"); /* Output net capacitance */
+					index_3 ("0.3, 0.5, 0.8"); /* Time */
+					values ("0.27, 0.63, 0.81");
+				}
+				. . .
+			}
+			output_voltage_fall () {
+				vector (ccsn_ovrf) {
+					index_1 ("0.01"); /* Rail-to-rail input transition */
+					index_2 ("0.001"); /* Output net capacitance */
+					index_3 ("0.2, 0.4, 0.6"); /* Time */
+					values ("0.81, 0.63, 0.27");
+				}
+				. . .
+			}
+			propagated_noise_low () {
+				vector (ccsn_pnlh) {
+					index_1 ("0.5"); /* Input glitch height */
+					index_2 ("0.6"); /* Input glitch width */
+					index_3 ("0.05"); /* Output net capacitance */
+					index_4 ("0.3, 0.4, 0.5, 0.7"); /* Time */
+					values ("0.19, 0.23, 0.19, 0.11");
+				}
+			propagated_noise_high () {
+			. . .
+		}
+	}
+}
+```
+
+### 3.8 Power Dissipation Modeling
+
+The cell library contains definition related to power dissipation in the cells. This include both ==active power== as well as ==leakage power==. 
+
+#### 3.8.1 Active Power
+
+The active power in the cell is due to the ==charging of the output load== as well as the ==internal switching==. These two are normally referred to as ==*output switching power*== and ==*internal switching power*==.
+
+The output switching power is ==independent== of the cell type, and depend upon only the ==output capactive load==, ==frequency of switching==, and the ==power supply== of the cell.
+
+The internal switching power is consumpted when there is activity at the input or output of the cell. An input pin transition can cause the output to switch and thus results in internal switching power. For example, An ==*inverter*== cell consumes power whenever the input switches (rise or fall transition).
+
 
