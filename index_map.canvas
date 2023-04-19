@@ -11,15 +11,16 @@
 		{"type":"text","text":"SOC设计方法与实现","id":"487329a9b81b421d","x":200,"y":340,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"硬件架构的艺术","id":"f2709ea66618aa8b","x":200,"y":460,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"SOC","id":"64c688a9f0368a72","x":-140,"y":400,"width":250,"height":60,"color":"6"},
-		{"type":"text","text":"Comm Algorithm","id":"91cd19ddc3331e1d","x":-140,"y":-120,"width":250,"height":60,"color":"6"},
-		{"type":"text","text":"BUS","id":"69d0b9792dbb6eb9","x":-140,"y":-280,"width":250,"height":60,"color":"6"},
-		{"type":"text","text":"AMBA","id":"8f04ae2535cc3981","x":200,"y":-280,"width":250,"height":60,"color":"6"},
-		{"type":"text","text":"Filter Design","id":"6d436ff3c4952b62","x":200,"y":-120,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"Miscellaneous","id":"3448833466d84a17","x":-140,"y":800,"width":250,"height":60,"color":"6"},
-		{"id":"ed76728bb2b9c440","x":-140,"y":620,"width":250,"height":60,"color":"6","type":"text","text":"Digital IC"},
+		{"type":"text","text":"Digital IC","id":"ed76728bb2b9c440","x":-140,"y":620,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"back end","id":"615b23012b29ef23","x":200,"y":680,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"front end","id":"ea33c732114cd231","x":200,"y":560,"width":250,"height":60,"color":"6"},
-		{"id":"94f27f3d83616212","x":540,"y":680,"width":250,"height":60,"color":"1","type":"text","text":"STA"}
+		{"type":"text","text":"STA","id":"94f27f3d83616212","x":540,"y":680,"width":250,"height":60,"color":"1"},
+		{"type":"text","text":"BUS","id":"69d0b9792dbb6eb9","x":-140,"y":-440,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"AMBA","id":"8f04ae2535cc3981","x":200,"y":-440,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"Comm Algorithm","id":"91cd19ddc3331e1d","x":-140,"y":-280,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"Filter Design","id":"6d436ff3c4952b62","x":200,"y":-280,"width":250,"height":60,"color":"6"},
+		{"id":"0ad33a628dc1b759","x":540,"y":530,"width":250,"height":60,"type":"text","text":"DFT"}
 	],
 	"edges":[
 		{"id":"0836815cc701bc8b","fromNode":"aa60562589cac33f","fromSide":"right","toNode":"69d0b9792dbb6eb9","toSide":"left"},

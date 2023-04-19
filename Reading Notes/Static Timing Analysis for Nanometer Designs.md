@@ -630,5 +630,148 @@ Switching power can be dissipated even when the outputs or the internal state do
 
 The above guideline refers to consistency of usage of power tables by the application tool and ensures that the internal power specified due to clock input is not double-counted during power calculation.
 
+#### 3.8.2 Leakage Power
+
+Leakage Powert: cell is powered but there is no activity.
+
+In the earlier generation of CMOS process technologies, the leakage power has been ==negligible== and has ==not been the major consideration== during the design process.
+
+However, as the technology shrinks, the leakage power is becoming ==significant== and is no longer be negligible in comparision to active power.
+
+The leakage power contribution:
+- ==subthreshold== current in the MOS devices;
+- ==tunneling current== throught the gate oxide.
+
+By using high $V_t$ cells, one can reduce the subthreshold current thus reduce the leakage power. However, there is a trade-off due to ==reduced speed== of high $V_t$ cells. The high $V_t$ cells have smaller leakage but are slower in speed, and the low $V_t$ cells have larger leakage but greater in speed.
+
+> The high $V_t$ cells refer to cells with higher threshold voltage than the standard one for the process technology.
+
+
+> The ==strength of cells== is another trade-off between leakage and speed. It will be discussed further.
+
+The subthreshold MOS leakage has a strong non-linear dependence with respect to temperature. ==A higher temperature normally causes a higher leakage==.
+
+The contribution due to gate oxide tunneling is relatively invariant with respect to temperature or the $V_t$ of the devices.
+
+| Lekage type | Process in 100nm and above | Process in 65nm or finer | High temperature |
+| --- | --- | --- | --- |
+| Subthreshold | dominant | equal | dominant |
+| Gate oxide tunneling | negligible | equal | x |
+
+An example in the cell library:
+
+```
+cell_leakage_power : 1.366;
+```
+
+The leakage power is in nanowatts. It can also be specified using `when` condition for state-dependent values.
+
+```
+cell_leakage_power : 0.70;
+leakage_power() {
+	when : "!I";
+	value : 1.17;
+}
+leakage_power() {
+	when : "I";
+	value : 0.23;
+}
+```
+
+Where, *I* is the input pin of an inverter *INV1*, and it should be noted that the specification includes a default value `0.70` outside the `when` conditions, the default value is generally the average of the leakage power specified within the `when` condition.
+
+### 3.9 Other Attributes in Cell Library
+
+#### Area Specification
+
+The ==area specification== provides the area of a cell or cell group.
+
+```
+area: 2.35;
+```
+The above specifies that the area of the cell is 2.35 area units. It reflect the true area of the silicon of a relative measure.
+
+#### Function Specification
+
+The ==function specification== specify the functionality of a pin or pin group.
+
+```
+pin (Z) {
+	function: "IN1 & IN2";
+	. . .
+}
+```
+The above specifies that the functionality of the *Z* pin of a two-input *and* cell.
+
+#### SDF Condition
+
+The ==SDF condition== attributes supports the ==Standard Delay Format==, the annotation of SDF is denoted by *sdf_cond*.
+
+```
+timing() {
+	related_pin : "A1";
+	when : "!A2";
+	sdf_cond : "A2 == 1'b0";
+	timing_sense : positive_unate;
+	cell_rise(delay_template_7x7) {
+	. . .
+	}
+}
+```
+
+### The remaining is #reserved  
+
+## Ch.4 Interconnect Parasitic
+
+A ==wire== connecting pins of standard cells and blocks is referred to as a ==net==. 
+
+A net is typically has only one driver while it can drive a number of fanouts cells or blocks.
+
+After physical implementation, the ==net== can travel on multiple metal layers of the chip, which has different resistance and capacitance values. Thus, a net can be divided into several segment, we refer to an ==interconnect trace== as a synonym to a segment, which is a part of the net.
+
+#### 4.1 RLC for Interconnect
+
+==The interconnect resistance== comes from the ==interconnected traces traversed in various metal layers and vias== in the design as shown in the figure.
+
+![[nets_n_metal_layers.png]]
+
+Thus, the interconnect resistance can be considered as the resistance between the input pin of the cell and the output pin of the fanout cells.
+
+==The interconnect capacitance== contribution is also from the ==metal traces== and is comprised of ==grounded capacitance== as well as the ==capacitance between neighboring signal routes==.
+
+==The interconnect inductance== arises due to ==current loops==. 
+
+The resistant and capacitance (*RC*) for a section of interconnect trace can be ideally represented by a distributed RC tree. Consider $R_p$ and $C_p$ as the resistance and capacitance of the trace  per unit, and L as the trace length. The total RC can be represented as follows:
+$$R_t=R_p\cdot L$$
+$$C_t=C_p\cdot L$$
+It can be obtained bty extracted parasitics which is provided by the ==ASIC foundry==. 
+
+![[RC_tree.png]]
+
+The RC interconnect can be represented by various simplified models, such as T-model, Pi-model etc.
+
+##### T-model
+
+![[t_model.png]]
+
+##### Pi-model
+
+![[pi_model.png]]
+
+
+
+
+### 4.6 Reducing Parasitics for Critical Nets
+
+#### Reducing Interconnect Resistance
+
+For citical nets, it's important to maintain ==low slew== values (fast transition time), which implies that the interconnect resistance should be reduced.
+
+Two ways of achieving low resistance:
+
+- 
+
+### Ch.5 Delay Calculation
+
 
 
