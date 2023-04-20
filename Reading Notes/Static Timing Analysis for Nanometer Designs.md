@@ -840,17 +840,71 @@ set_wire_load_mode enclosed
 - enclosed
 - segmented
 
+![[wlm_top.png]]
 
+In the ==*top*== wireload model, all nets within the hierarchy inherit the wireload model of the top-level. Which means that all the wireload models specified in lower-level block are ignored, and thus inherit the wireload model from the top-level.
+
+![[wlm_enclosed.png]]
+
+In the ==*enclosed*== wireload model, the wireload model of a block is only used for the net that is fully encompassed by the block. In the case of Figure 4-11, the net *NETQ* goes though B2, B3, and B5, but it is only enclosed by B2, so *wlm_light* is used for NETQ.
+
+![[wlm_segmented.png]]
+
+In the ==*segmented*== wireload model, if a net goes though multiple blocks, each segment of the net gets its wireload model from the block that encompasses the segment. As the figure illustrated, the portion of NETQ that within B3 uses *wl_aggr* wireload model, the portion of NETQ that within B2 uses *wl_light* wireload model.
+
+Typically, a wireload model is selected based upon the chip area of the block, however, these can be modified at the user's discretion.
+
+That's to say, one can select the wireload model *wlm_aggr* for a block area between 0 to 400, *wlm_typ* for block area between 400 to 1000, and *wlm_cons* for area 1000 or higher.
+
+A ==default wireload model== can be optionally specified in the cell library:
+
+```
+default_wire_load: "wlm_light";
+```
+
+A ==wireload selection group== would selects a wireload model based upon the block area, is defined in a cell library. Here is an example:
+
+```
+wire_load_selection (WireAreaSelGrp) {
+	wire_load_from_area(0, 50000, "wlm_light");
+	wire_load_from_area(50000, 100000, "wlm_cons");
+	wire_load_from_area(100000, 200000, "wlm_typ");
+	wire_load_from_area(200000, 500000, "wlm_aggr");
+}
+```
+
+A cell library may contain many such selection groups, thus one should specify which to use in STA by using the `set_wire_load_selection_group` specification.
+
+```
+set_wire_load_selection_group WireAreaSelGrp
+```
+
+### 4.3 Representation for Extracted Parasitics
+
+Parasitics extracted from a layout can be described with the following three formats:
+
+- Detailed Standard Parasitic Format (DSPF)
+- Reduced Standard Parasitic Format (RSPF)
+- Standard Parastic Extraction Format (SPEF)
+
+This section is temporarily #reserved for future.
+
+### 4.4 Representing Coupling Capacitance
+
+### 4.5 Hierarchical Methodology
 
 ### 4.6 Reducing Parasitics for Critical Nets
 
 #### Reducing Interconnect Resistance
 
-For citical nets, it's important to maintain ==low slew== values (fast transition time), which implies that the interconnect resistance should be reduced.
+For citical nets, it's important to maintain ==low slew== values (fast transition time), which implies that the interconnect ==resistance should be reduced==.
 
 Two ways of achieving low resistance:
 
-- 
+- Wide trace: Having a trace wider will reduce the interconnect resistance without increasing interconnect capacitance signifcantly.
+- Routing in upper (thicker) metals: An upper metal layers normally have ==low resistivity== which can be utilized for critical signals.
+
+The low resistance reduces the interconnect delay as well as the transition time at the destination pins.
 
 ### Ch.5 Delay Calculation
 
