@@ -758,6 +758,87 @@ The RC interconnect can be represented by various simplified models, such as T-m
 
 ![[pi_model.png]]
 
+#### 4.2 Wireload Model
+
+Prior to floorplanning or layout, ==wireload models== can be used to ==estimate resistance capacitance and area overhead== due to interconnect. 
+
+The wireload model is used to estimate ==the length of a net== based upon the number of its fanouts.
+
+The wireload model is based upon the area of the block, and thus designs with different areas may choose different wireload models.
+
+The wireload model maps the estimated length of the net into resistance, capacitance and area overhead due to routing.
+
+![[wireload_model_area.png]]
+
+There is an example for the specification of wireload model.
+
+```
+wire_load (“wlm_conservative”) {
+	resistance : 5.0;
+	capacitance : 1.1;
+	area : 0.05;
+	slope : 0.5;
+	fanout_length (1, 2.6);
+	fanout_length (2, 2.9);
+	fanout_length (3, 3.2);
+	fanout_length (4, 3.6);
+	fanout_length (5, 4.1);
+}
+```
+
+Where, `resistance`, `capacitance`, and `area` are all specified within the unit length of interconnect. 
+
+`slope` is the extrapolation slope to be used for data points that are not specified in the fanout length table.
+
+![[wireload_fanout.png]]
+
+The wireload model illustrates how the ==length of wire== can be described as a functon of ==fanout==.
+
+For any fanout value not explicitly listed in the table, the interconnect length can be deduced with linear extrapolation with the specified `slope`.
+
+Where, the number of 8 for fanout is not specified.
+
+```
+Length = 4.1 + (8 - 5) * 0.5 = 5.6 units
+Capacitance = Length * cap_coeff(1.1) = 6.16 units
+Resistance = Length * res_coeff(5.0) = 28.0 units
+Area overhead = Length * area_coeff(0.05) = 0.28 area units
+```
+
+##### 4.2.1 Interconnect Tree
+
+Once the resistance and capacitance of the interconnect net are estimated, the next question is to determine the ==interconnect delay== which is depend on the topology assumed for the net. 
+
+For pre-layout estimation, the interconnect RC tree can be represented using one of the following models:
+
+- Best-case tree:
+	The desitination (load) pin is physically adjacent to the driver. Thus, none of the ==wire resistance== is in the path to the desitination pin.
+- Balanced tree:
+	It is assumed that each destination pin is on a separate portion of the interconnect wire.
+- Worst-case tree:
+	It is assumed that all the destination pins are together at the far end of the wire.
+
+See Page 109.
+
+##### 4.2.2 Specifying Wireload Models
+
+A wireload model is specified using the following command:
+
+```
+set_wire_load_model “wlm_cons” -library “lib_stdcell”
+# Says to use the wireload model wlm_cons present in the
+# cell library lib_stdcell.
+```
+
+The wireload mode can be specified with
+
+```
+set_wire_load_mode enclosed
+```
+
+- top
+- enclosed
+- segmented
 
 
 
