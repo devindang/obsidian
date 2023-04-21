@@ -19,7 +19,7 @@ The attribute of a cell would be
 
 The pin capacitance describe the capacitance of the cell inputs and specify only for cell inputs, not for outputs, the cell outputs capacitance in most cell libraries is 0. 
 
-```
+```verilog
 pin (INP1) {
 capacitance: 0.5;
 rise_capacitance: 0.5;
@@ -77,7 +77,7 @@ The table models are referred to as NLDM (Non-Linear Delay Model) and are used f
 
 Here is an example for an NLDM:
 
-```
+```verilog
 pin (OUT) {
 	max_transition : 1.0;
 	timing() {
@@ -134,7 +134,7 @@ In the new generation libraries, the portion where the actual waveform is mostly
 
 Here is an example:
 
-```
+```verilog
 /* Threshold definitions */ 
 slew_lower_threshold_pct_fall : 30.0; 
 slew_upper_threshold_pct_fall : 70.0; 
@@ -221,7 +221,7 @@ Similar to setup and hold check, there are constraint checks for governing the a
 
 ##### Example for Recovery, Removal, and Pulse Width Checks
 
-```
+```verilog
 pin(CDN) {
 	direction : input;
 	capacitance : 0.002236;
@@ -274,7 +274,7 @@ Here is an example of a propagation delay arc for a ==negative edge-triggered fl
 
 This is a ==non-unate timing arc== as the active edge of the clock can cause either a rising or a falling edge on the output Q. Here is the delay table:
 
-```
+```verilog
 timing() {
 	related_pin : "CKN";
 	timing_type : falling_edge;
@@ -293,7 +293,7 @@ timing() {
 
 A rising edge-triggered flip-flop will specify rising_edge as its `timing_type`.
 
-```
+```verilog
 timing() {
 	related_pin : "CKP";
 	timing_type : rising_edge;
@@ -317,7 +317,7 @@ These two timing models are specified using ==state-dependent model==, here is a
 
 The timing model from A1 to Z when A2 is logic-0 is specified as follows:
 
-```
+```verilog
 pin (Z) {  
 	direction : output; 
 	max_capacitance : 0.0842; 
@@ -343,7 +343,7 @@ pin (Z) {
 
 Similarly, the timing model from A1 to Z when A2 is logic-1 is specified as follows:
 
-```
+```verilog
 timing() {  
 	related_pin : "A1";  
 	when : "A2";  
@@ -367,7 +367,7 @@ State-dependent models are also used for various of timing arcs such as Scan Mod
 
 In this case, two sets of timing models are specified - one for scan enable pin SE active, and the other for SE inactive.
 
-```
+```verilog
 pin (D) { 
 	...
 	timing() {  
@@ -398,7 +398,7 @@ State-dependent model can also be specified for any other attributes in the timi
 - Rise delays & fall delays
 - Timing constraint
 
-```
+```verilog
 leakage_power() { 
 	when : "A1 !A2"; 
 	value : 259.8;
@@ -451,7 +451,7 @@ The receiver pin capacitance can either be specified in ==PIN== level or ==Timin
 
 PIN level:
 
-```
+```verilog
 pin (IN) {
 	. . .
 	receiver_capacitance1_rise ("Lookup_table_4") {
@@ -462,7 +462,7 @@ pin (IN) {
 
 Timing Arc level:
 
-```
+```verilog
 pin (OUT) {
 	. . .
 	timing () {
@@ -497,7 +497,7 @@ In the CCS model, the non-linear timing is represented in terms of ==output curr
 
 Essentially, the waveform in CCS model refers to output current values specified as a function of time. 
 
-```
+```verilog
 pin (OUT) {
 	. . .
 	timing () {
@@ -537,7 +537,7 @@ What is a CCB?
 > - The CCB refers to the ==source-drain== channel connected portion of a cell. For example, single stage cells such as an ==*inverter*==, ==*nand*== and ==*nor*== cells contain only one CCB - the entire cell is connected through using one channel connection region. 
 > - Multi-stage cells such as ==*and*== cells, or ==*or*== cells, contain multiple CCBs.
 
-```
+```verilog
 pin (OUT) {
 	. . .
 	timing () {
@@ -601,7 +601,7 @@ The output switching power is ==independent== of the cell type, and depend upon 
 
 The internal switching power is consumpted when there is activity at the input or output of the cell. An input pin transition can cause the output to switch and thus results in internal switching power. For example, An ==*inverter*== cell consumes power whenever the input switches (rise or fall transition).
 
-```
+```verilog
 pin (Z1) {
 	. . .
 	power_down_function : "!VDD + VSS";
@@ -660,13 +660,13 @@ The contribution due to gate oxide tunneling is relatively invariant with respec
 
 An example in the cell library:
 
-```
+```verilog
 cell_leakage_power : 1.366;
 ```
 
 The leakage power is in nanowatts. It can also be specified using `when` condition for state-dependent values.
 
-```
+```verilog
 cell_leakage_power : 0.70;
 leakage_power() {
 	when : "!I";
@@ -686,7 +686,7 @@ Where, *I* is the input pin of an inverter *INV1*, and it should be noted that t
 
 The ==area specification== provides the area of a cell or cell group.
 
-```
+```verilog
 area: 2.35;
 ```
 The above specifies that the area of the cell is 2.35 area units. It reflect the true area of the silicon of a relative measure.
@@ -695,7 +695,7 @@ The above specifies that the area of the cell is 2.35 area units. It reflect the
 
 The ==function specification== specify the functionality of a pin or pin group.
 
-```
+```verilog
 pin (Z) {
 	function: "IN1 & IN2";
 	. . .
@@ -707,7 +707,7 @@ The above specifies that the functionality of the *Z* pin of a two-input *and* c
 
 The ==SDF condition== attributes supports the ==Standard Delay Format==, the annotation of SDF is denoted by *sdf_cond*.
 
-```
+```verilog
 timing() {
 	related_pin : "A1";
 	when : "!A2";
@@ -772,7 +772,7 @@ The wireload model maps the estimated length of the net into resistance, capacit
 
 There is an example for the specification of wireload model.
 
-```
+```verilog
 wire_load (“wlm_conservative”) {
 	resistance : 5.0;
 	capacitance : 1.1;
@@ -798,7 +798,7 @@ For any fanout value not explicitly listed in the table, the interconnect length
 
 Where, the number of 8 for fanout is not specified.
 
-```
+```verilog
 Length = 4.1 + (8 - 5) * 0.5 = 5.6 units
 Capacitance = Length * cap_coeff(1.1) = 6.16 units
 Resistance = Length * res_coeff(5.0) = 28.0 units
@@ -824,7 +824,7 @@ See Page 109.
 
 A wireload model is specified using the following command:
 
-```
+```verilog
 set_wire_load_model “wlm_cons” -library “lib_stdcell”
 # Says to use the wireload model wlm_cons present in the
 # cell library lib_stdcell.
@@ -832,7 +832,7 @@ set_wire_load_model “wlm_cons” -library “lib_stdcell”
 
 The wireload mode can be specified with
 
-```
+```verilog
 set_wire_load_mode enclosed
 ```
 
@@ -858,13 +858,13 @@ That's to say, one can select the wireload model *wlm_aggr* for a block area bet
 
 A ==default wireload model== can be optionally specified in the cell library:
 
-```
+```verilog
 default_wire_load: "wlm_light";
 ```
 
 A ==wireload selection group== would selects a wireload model based upon the block area, is defined in a cell library. Here is an example:
 
-```
+```verilog
 wire_load_selection (WireAreaSelGrp) {
 	wire_load_from_area(0, 50000, "wlm_light");
 	wire_load_from_area(50000, 100000, "wlm_cons");
@@ -953,4 +953,48 @@ The parasitics of the metal traces are extracted so that it can be mapped into a
 In this case, the internal net such as *NET0* maps into multiple subnodes.
 
 ![[post_layout_timing.png]]
+
+### 5.2 Cell Delay using Effective Capacitance
+
+The NLDM models can not directly utilized when the load at the output of the cell includes the ==interconnect resistance==. Instead, an "effective" capacitance approach is employed, which attempts to find a single capacitance that can be used as ==equivalent load== so that the ==original design as well the design with effictive capacitance behave similarly in terms of timing==.
+
+The cell with RC interconnect as its fanout could be represented by equivalent PI-network model. The concept of effective capacitance is to obtain an equivalent output capacitance $Ceff$ which has the same delay throught the cell as the original RC load.
+
+> Normally, the cell output waveform with ==RC load== is very different from the waveform with ==only capacitive loads==.
+
+![[eff_capacitance.png]]
+
+In relation to PI-equivalent representation, the effective capacitance can be expressed as:
+
+```verilog
+Ceff = C1 + k*C2, 0 <= k <= 1
+```
+
+Where, *C1* is the near-end capacitance, and *C2* is the far-end capacitance. 
+
+If the interconnect resistance of the PI-model is negligible, the effective capacitance is nearly equal to the total capacitance. However, if the interconnect resistance is relatively large, the effective capacitance is almost equal to the near-end capacitance *C1*.
+
+The effective capacitance is a function of
+- the driving cell
+- the characteristics of the load, specifically the ==input impedance of the load== as seen from the driving cell 
+
+For a given interconnect, a cell with a ==weak output drive== will see a ==larger effective capacitance== than a cell with a strong drive.
+
+Thus, the effective capacitance will be between the ==minimal== value of C1 for ==high interconnect resistance== or ==strong driving cell== and the ==maximum== value which is equal to the total capacitance when the interconnect resistance can be negligible.
+
+The destination pin ==transitions later== than the output of the driving cell.
+
+The phenomenon of near-end capacitance charging faster than the far-end capacitance is also referred to as the ==resistive shielding effect== of the interconnect, since only a portion of the far-end capacitance is seen by the driving cell
+
+![[load_transition.png]]
+
+The delay calculation tool obtains the effective capacitance by an iterative procedure.
+
+1. Obtain the driving point impedance seen by the cell output for the actual RC load.
+2. Computing the equivalent effective capacitance.
+
+The method to obtain the equivalent effective capacitance is ==equating== the charge transferred until the midpoint of the transition in the two senarios -- Actual RC load, and effective capacitance as load.
+
+The value of effective capacitance converges within a small number of iterations in most pratical senarios.
+
 
