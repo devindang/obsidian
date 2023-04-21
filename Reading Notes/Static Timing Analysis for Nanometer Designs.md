@@ -906,7 +906,23 @@ Two ways of achieving low resistance:
 
 The low resistance reduces the interconnect delay as well as the transition time at the destination pins.
 
-### Ch.5 Delay Calculation
+#### Increasing Wire Spacing
+
+Increasing the wire spacing between traces reduces the amount of coupling (and total) capacitance of the net, which decreases the crosstalk. 
+
+#### Parasitic for Correlated Nets
+
+In many cases, a group of nes have to be matched in terms of timing.
+
+==An example is the data signals within a byte lane of a high speed DDR interface==.
+
+It's important that all signals within a byte lane see identical parasitics, the signals must be routed in the ==same metal layer==.
+
+For example, while metal layer M2 and M3 have the same average and the same statistical variations, they are independent so that the parasitic variation in these two layer do not track each other. 
+
+Thus, if it's important for timing to match for critical signals, the routing must be identical in each metal layer.
+
+## Ch.5 Delay Calculation
 
 
 
