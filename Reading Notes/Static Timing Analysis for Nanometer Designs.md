@@ -924,5 +924,33 @@ Thus, if it's important for timing to match for critical signals, the routing mu
 
 ## Ch.5 Delay Calculation
 
+### 5.1 Overview
 
+#### 5.1.1 Delay Calculation Basis
+
+A typical design comprises of various combinational and sequential cells. Here is an example to describe delay calculation.
+
+![[delay_calc_example.png]]
+
+The library description of each cell specifies the pin capacitance values for each of the input pins. The standard libraries normally do not specify pin capacitances for cell outputs which is regarded as 0.
+
+Every ==net== in the design has a capacitance load which is the sum of the ==pin capacitance loads  of every fanouts== of the net plus ==any contribution from the interconnect==. 
+
+In this case, *NET0* has a net capacitance which is comprised of the input pin capacitance from *UAND1* and *UNOR2* cells. The output *O1* has the pin capacitance of the *UNOR2* cell plus any capacitive loading from the output of the blocks. The Input *I1* and *I2* has the pin capacitance corresponding to the *UAND1* and *UINV0* cells.
+
+#### 5.1.2 Delay Calculation with Interconnect
+
+##### Pre-layout Timing
+
+The interconnect parasitics are estimated using the wireload models during the pre-layout timing verification. The interconnect resistance is normally set to 0 in the wireload models.
+
+In this case, the delay is obtainded for all the timing arcs in the design from the library description with wireload model.
+
+##### Post-layout Timing
+
+The parasitics of the metal traces are extracted so that it can be mapped into an RC network between driver and destination cells.
+
+In this case, the internal net such as *NET0* maps into multiple subnodes.
+
+![[post_layout_timing.png]]
 
