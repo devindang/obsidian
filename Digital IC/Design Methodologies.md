@@ -78,3 +78,11 @@ The inferring of latch is normally considered only in ==combinational== design.
 -  A latch doesn’t save logic resources in the FPGA because it uses the same primitive as a flip-flop.
 -  The latch's output is only guaranteed to be stable during half of the clock cycle, while for logic between two flip-flops, the router can utilize the full clock period.
 
+#### Latch in FPGA
+
+In Xilinx FPGA, latches will be synthesized to LDCE
+
+![[LDCE.png]]
+
+
+
