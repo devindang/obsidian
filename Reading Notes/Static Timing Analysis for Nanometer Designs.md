@@ -1007,7 +1007,46 @@ The Thevenin source comprises of a ==ramp source== with a series resistance $R_d
 
 ![[thevenin.png]]
 
-Elmore Delay and other delay models are reserved.
+### 5.3 Interconnect Delay
+
+The basis delay calculation treats all capacitances as capacitances to ground.
+
+For a ==post-layout== design, the interconnect delay of a pin is computed by the equivalent Thevenin voltage source at the input of the interconnect.
+
+While for a ==pre-layout== analysis, the RC interconnect structure is determined by the tree type, which in trun determines the net delay. The selected tree type is normally specified in the library.
+
+#### Elmore Delay Model
+
+Elmore delays are applicable only for RC trees, which satisfy:
+-  Has a single input (source) node
+-  Does not have any resistive loops
+-  All capacitances are between a node and ground
+
+![[elmore.png]]
+
+The Elmore delay equation can be represented as
+
+```verilog
+T_{d1}=C_1*R_1;
+T_{d2}=C_1*R_1+C_2*(R_1+R_2);
+...
+T_{dn}=\sum (i=1,N) C_i (\sum (j=1,i)R_j); # Elmore delay equition
+```
+
+The equivalent RC network can be simplified as a PI-model or T-model, either representation provides the net delay as :
+
+$$R_{wire}*(C_{wire}/2+C_{load})$$
+This is because the $C_{load}$ sees the entire wire resistance in its charging path, whereas $C_t$ sees $R_t/2$ in its charging path at the T-representation.
+
+![[t-model_elmore.png]]
+
+And $C_t/2$ sees $R_t$ in its charging path at the PI-representation.
+
+![[pi-model_elmore.png]]
+
+For a more complex interconnect tree such as the worst-case tree, balanced tree, best-case tree, the situation is similar.
+
+#reserved 
 
 ### 5.4 Slew Merging
 
