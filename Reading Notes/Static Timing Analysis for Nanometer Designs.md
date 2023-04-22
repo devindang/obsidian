@@ -997,4 +997,18 @@ The method to obtain the equivalent effective capacitance is ==equating== the ch
 
 The value of effective capacitance converges within a small number of iterations in most pratical senarios.
 
+With this method, the output slew obtained does not match the actual waveform, especially for the trailing half of the waveform.
+
+In a typically senario, the waveform of interest is ==not== at the ==output of the cell== but the ==destination point of the interconnect== which are the ==input pins of the fanout cells==.
+
+Ones the effective capacitance is obtained, there are various approaches to compute the delay and the waveform at the destination points. The ==effective capacitance procedure== also computes an ==equivalent Thevenin voltage source== for the driving cell.
+
+The Thevenin source comprises of a ==ramp source== with a series resistance $R_d$ . The series resistance $R_d$ corresponds to the pull-down (or pull-up) resistance of the output stage of the cell.
+
+![[thevenin.png]]
+
+Elmore Delay and other delay models are reserved.
+
+### 5.4 Slew Merging
+
 
