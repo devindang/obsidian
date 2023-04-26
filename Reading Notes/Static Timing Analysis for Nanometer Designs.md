@@ -646,6 +646,7 @@ By using high $V_t$ cells, one can reduce the subthreshold current thus reduce t
 
 > The high $V_t$ cells refer to cells with higher threshold voltage than the standard one for the process technology.
 
+> A cell with high $V_t$ is normally means a small subthreshold current which will reduce the leakage.
 
 > The ==strength of cells== is another trade-off between leakage and speed. It will be discussed further.
 
@@ -1050,4 +1051,18 @@ For a more complex interconnect tree such as the worst-case tree, balanced tree,
 
 ### 5.4 Slew Merging
 
+
+
+
+##### PVT Corners
+
+There is an example for 5-corner model.
+
+![[pvt_corner.png]]
+
+*TT* : Typical NMOS Typical PMOS
+*FF* : Fast NMOS Fast PMOS
+*SS* : Slow NMOS Slow PMOS
+*FS* : Fast NMOS Slow PMOS
+*SF* : Slow NMOS Fast PMOS
 
