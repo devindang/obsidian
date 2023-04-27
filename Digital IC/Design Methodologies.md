@@ -86,3 +86,12 @@ In Xilinx FPGA, latches will be synthesized to LDCE
 
 
 
+## Propagation Delay
+
+Here is how you can fix high propagation delay:
+
+1.  Slow down your clock frequency
+2.  Break your logic up into stages (pipeline)
+
+![[propagation_delay.png]]
+
