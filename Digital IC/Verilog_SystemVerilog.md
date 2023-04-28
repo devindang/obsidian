@@ -115,3 +115,50 @@ Output for ==fork ... join_none==
 #                   20	Process-2 Finished
 ```
 
+
+## Singed Unsigned
+
+### Singed? Unsigned? For a RHS
+
+#### Case 1: integer <= unsigned + singed
+
+```verilog
+`timescale 1ns/1ps
+
+module test();
+
+reg  signed     [3:0]   din1;
+reg             [3:0]   din2;
+wire integer    [3:0]   dout;
+
+initial begin
+    din1    <=  -5;
+    din2    <=  2;
+end
+
+assign dout = din1+din2;
+
+endmodule
+```
+
+The `dout` would be 13.
+
+> As long as there is `unsigned` in the RHS, the operation is treated as unsigned.
+
+#### Case 2: singed <= unsigned + singed
+
+```verilog
+wire signed  [3:0]   dout;
+```
+
+The `dout` would be -3.
+
+#### Case 3: undefined <= unsigned + singed
+
+```verilog
+wire         [3:0]   dout;
+```
+
+The `dout` would be -3. It will be treated as singed as if there is at least one `singed` as the RHS.
+
+
