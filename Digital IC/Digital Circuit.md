@@ -13,3 +13,4 @@ In a CMOS based circuit,
 
 Actually, an AND gate is comprised of a NAND gate and a NOT gate, so does an OR gate.
 
+refs: https://forum.allaboutcircuits.com/threads/number-of-cmos-transistors-required-for.43613/
