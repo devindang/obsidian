@@ -1,5 +1,8 @@
+### CMOS vs. Bipolar(TTL)
 
-## Universal Gate
+Generally speaking, CMOS transistors are preferred for low-power, high-noise-immunity, and high-integration-density applications, while bipolar transistors are preferred for high-speed, high-gain, and high-linearity applications.
+
+###  Universal Gate
 
 The universal gate is a NAND gate or NOR gate.
 
@@ -18,3 +21,71 @@ refs: https://forum.allaboutcircuits.com/threads/number-of-cmos-transistors-requ
 
 74HC283 : Look-Ahead Full Adder
 74HC85 : Comparator
+
+### Circuit Diagram
+
+1. Half Adder
+
+
+
+![[half_adder.png]]
+
+2. Full Adder
+
+![[full_adder.png]]
+
+3. Multiplexer
+
+![[MUX4.png]]
+
+4. SR Latch
+
+8 transistors
+
+![[SR_latch.png]]
+
+5. Negative-OR Equivalent NAND based SR Latch
+
+8 transistors
+
+![[SR_not_latch.png]]
+
+6. D Latch
+
+18 transistors
+
+![[D_latch.png]]
+
+7. one D latch beased D Flip-Flop
+
+18 transistors
+
+![[D_FF.png]]
+
+8. Pulse transition detector
+
+![[transition_detector.png]]
+
+9. 2 D-latch based D Flip-Flop
+
+36 transistors
+
+![[DFF2.png]]
+
+10. Frequency Division - 2
+
+![[div_2_dff.png]]
+
+11. Frequency Division - 4 Ripple Counter
+
+![[div_4_ripple.png]]
+
+12. Counter?
+
+
+
+### FSM
+
+The Moore state machine is one where the outputs depend only on the internal present state. 
+
+The Mealy state machine is one where the outputs depend on both the internal present state and on the inputs. 

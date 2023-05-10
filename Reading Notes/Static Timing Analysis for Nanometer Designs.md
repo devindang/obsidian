@@ -1053,6 +1053,31 @@ For a more complex interconnect tree such as the worst-case tree, balanced tree,
 
 
 
+## Ch.7 Configuring the STA Environment
+
+### 7.2 Specifying Clocks
+
+```verilog
+create_clock \
+	-name SYSCLK \
+	-period 20 \
+	-waveform {0 5} \
+	[get_ports SCLK]
+```
+
+```verilog
+create_clock -period 125 \
+	-waveform {100 150} [get_ports ARMCLK]
+# Since the first edge has to be rising edge,
+# the edge at 100ns is specified first and then the
+# falling edge at 150ns is specified. The falling edge
+# at 25ns is automatically inferred.
+```
+
+![[create_clock.png]]
+
+
+
 
 ##### PVT Corners
 
