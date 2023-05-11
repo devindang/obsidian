@@ -1057,7 +1057,7 @@ For a more complex interconnect tree such as the worst-case tree, balanced tree,
 
 ### 7.2 Specifying Clocks
 
-```verilog
+```tcl
 create_clock \
 	-name SYSCLK \
 	-period 20 \
@@ -1065,7 +1065,7 @@ create_clock \
 	[get_ports SCLK]
 ```
 
-```verilog
+```tcl
 create_clock -period 125 \
 	-waveform {100 150} [get_ports ARMCLK]
 # Since the first edge has to be rising edge,
@@ -1076,6 +1076,163 @@ create_clock -period 125 \
 
 ![[create_clock.png]]
 
+#### 7.2.1 Clock Uncertainty
+
+```tcl
+set_clock_uncertainty -setup 0.2 [get_clocks CLK_CONFIG]
+set_clock_uncertainty -hold 0.05 [get_clocks CLK_CONFIG]
+```
+
+The uncertainty can be ==clock jitter== or other pessimism.
+
+![[uncertainty.png]]
+
+The uncertainty can also be used on paths crossing clock boundaries, called ==inter clock uncertainty==.
+
+```tcl
+set_clock_uncertainty -from VIRTUAL_SYS_CLK -to SYS_CLK \
+-hold 0.05
+set_clock_uncertainty -from VIRTUAL_SYS_CLK -to SYS_CLK \
+-setup 0.3
+set_clock_uncertainty -from SYS_CLK -to CFG_CLK -hold 0.05
+set_clock_uncertainty -from SYS_CLK -to CFG_CLK -setup 0.1
+```
+
+#### 7.2.3 Clock Latency
+
+![[clock_latency.png]]
+
+Two kind of clock latency: ==source latency== and ==network latency==.
+
+-  source latency: from clock source to clock definition point.
+-  network latency: from clock definition point to the clock pin of a flip-flop.
+
+```tcl
+# Specify a network latency (no -source option) of 0.8ns for
+# rise, fall, max and min:
+set_clock_latency 0.8 [get_clocks CLK_CONFIG]
+# Specify a source latency:
+set_clock_latency 1.9 -source [get_clocks SYS_CLK]
+# Specify a min source latency:
+```
+
+```tcl
+set_clock_latency 0.851 -source -min [get_clocks CFG_CLK]
+# Specify a max source latency:
+set_clock_latency 1.322 -source -max [get_clocks CFG_CLK]
+```
+
+==clock tree synthesis==
+
+### 7.3 Generated Clock
+
+A generated clock is clock derived from the master clock. A master clock is defined using the `create_clock` specification.
+
+```tcl
+create_clock -name CLKP 10 [get_pins UPLL0/CLKOUT]
+# Create a master clock with name CLKP of period 10ns
+# with 50% duty cycle at the CLKOUT pin of the PLL.
+create_generated_clock -name CLKPDIV2 -source UPLL0/CLKOUT \
+-divide_by 2 [get_pins UFF0/Q]
+# -multiply_by
+# Creates a generated clock with name CLKPDIV2 at the Q
+# pin of flip-flop UFF0. The master clock is at the CLKOUT
+# pin of PLL. And the period of the generated clock is double
+# that of the clock CLKP, that is, 20ns.
+```
+
+A generated clock is used for the new clock that is generated based on a master clock.
+
+It is specified for STA to determine the clock period.
+
+![[generated_clock.png]]
+
+The output of the flip-flop can also be defined as a master clock, but it will create a new clock domain, where the generated clock is considered in phase with its master clock.
+
+Another important aspect is a generated clock is not required to set the ==source delay==, while it is must for a master clock. The generated clock origin is considered as its master clock definition point, instead of the definition point. Thus the source delay is automatically included for generaeted clock.
+
+##### Multiplexer Selecting Clocks
+
+![[MUX_clock.png]]
+
+It is not necessary to define a generated clock for TCLK_MUX_OUT.
+
+-  If CLK_SELECT is set to a constant, the output clock gets the correct clock propagated automatically.
+-  If CLK_SELECT is not constrainted, the STA will report paths between TCLK and TCLKDIV5, we need to ==set a false path== or specify an ==exclusive clock== relationship between them. This of course assume that there is no any paths between TCLK and TCLKDIV5 elsewhere in the design.
+-  If CLK_SELECT is not static and can change during device operation, ==clock gating checks== are inferred for the input of the multiplexer, it ensure the clock switches at the input of a multiplexer is safe with respect to the multiplexer select signal.
+
+##### Generated Clock using Edge and Edge_Shift Option
+
+#reserved 
+
+#### `invert` option
+
+![[generated_invert.png]]
+
+```tcl
+create_clock -period 10 [get_ports CLK]
+create_generated_clock -name NCLKDIV2 -divide_by 2 -invert \
+-source CLK [get_pins UINVQ/Z]
+```
+
+An `invert` option is required when the generated clock is an inversion clock. It is specified for STA.
+
+
+#### PLL Generated Clocks
+
+
+### 7.4 Constraining Input Paths
+
+`input_delay` is specified for the input of the Flip-Flop in DUA with respect to the external ==Lauch Clock==.
+
+![[input_constr.png]]
+
+```tcl
+set Tclk2q
+0.9
+set Tc1
+0.6
+set_input_delay -clock CLKA -max [expr Tclk2q + Tc1] \
+[get_ports INP1]
+```
+
+![[wc_bc_input_delay.png]]
+
+-  available setup time slow corner: 15-6.7=8.3ns
+-  available setup time fast corner: 15-3=12ns
+
+### 7.5 Constraining Output Paths
+
+`output_delay` is specified for the output of the Flip-Flop in DUA with respect to the external ==Capture Clock==.
+
+![[output_delay_constr.png]]
+
+```tcl
+set Tc2
+3.9
+set Tsetup
+1.1
+set_output_delay -clock CLKQ -max [expr Tc2 + Tsetup] \
+[get_ports OUTB]
+```
+
+![[wc_bc_output_delay.png]]
+
+```tcl
+create_clock -period 20 -waveform {0 15} [get_ports CLKQ]
+set_output_delay -clock CLKQ -min -0.2 [get_ports OUTC]
+set_output_delay -clock CLKQ -max 7.4 [get_ports OUTC]
+```
+
+![[output_delay_caseC.png]]
+
+```tcl
+create_clock -period 100 -waveform {5 55} [get_ports MCLK]
+set_input_delay 25 -max -clock MCLK [get_ports DATAIN]
+set_input_delay 5 -min -clock MCLK [get_ports DATAIN]
+set_output_delay 20 -max -clock MCLK [get_ports DATAOUT]
+set_output_delay -5 -min -clock MCLK [get_ports DATAOUT]
+```
 
 
 
