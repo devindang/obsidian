@@ -1234,6 +1234,305 @@ set_output_delay 20 -max -clock MCLK [get_ports DATAOUT]
 set_output_delay -5 -min -clock MCLK [get_ports DATAOUT]
 ```
 
+### 7.6 Timing Path Groups
+
+![[timing_path_classify.png]]
+
+Four kinds of timing paths:
+
+-  from an input port to an output port;
+-  from an input port to an input of a flip-flop or a memory;
+-  from the clock pin of a flip-flop or a memory to an input of flip-flop or a memory;
+-  from the clock pin of flip-flop to an output port.
+
+In this case, these paths are:
+
+-  A -> Z
+-  A -> UFFA/D
+-  UFFA/CK -> UFFB/D
+-  UFFB/CK -> Z
+
+Timing paths are sorted into path groups by the clock associated with the ==endpoint== of the path. 
+
+Every design has a default path group that includes all non-clocked (asynchronous) paths.
+
+Thus, in the following case, the clock groups are:
+
+-  CLKA group: A to UFFA/D
+-  CLKB group: UFFA/CK to UFFB/D
+-  DEFAULT group: A to Z; UFFB/CK to Z
+
+![[path_groups.png]]
+
+### 7.7 Modeling of External Attributes
+
+`create_clock`, `set_input_delay`, `set_output_delay` is enough to constrain all paths in a design, but insufficient for IO pins of the block.
+
+For inputs, the slew of the input is required to be specified:
+
+-  set_drive (not recommended)
+-  set_drive_cell
+-  set_input_transition
+
+For outputs, the output load capacitance seen by the output port needs to be specified:
+
+-  set_load
+
+#### 7.7.1 Drive Strength
+
+##### Input Driving
+
+![[drive_strengt.png]]
+
+The smaller the drive value, the higher the drive strength. A resistance value of 0 implies an infinite drive strength.
+
+By default, all inputs are assumed to have an infinite drive strength. The default condition implies that the ==transition time== at the input pins is 0.
+
+The unit is defined in the library, usually Kohms.
+
+```tcl
+set_drive 100 UCLK
+# Specifies a drive resistance of 100 on input UCLK.
+# Rise drive is different from fall drive:
+set_drive -rise 3 [all_inputs]
+set_drive -fall 2 [all_inputs]
+```
+
+![[set_driving_cell.png]]
+
+The set_driving_cell specification offers a more convenient and accurate approach in describing the drive capability of a port. The set_driving_cell can be used to specify a cell driving an input port.
+
+```tcl
+set_driving_cell -lib_cell INV3 \
+-library slow [get_ports INPB]
+# The input INPB is driven by an INV3 cell
+# from library slow.
+set_driving_cell -lib_cell INV2 \
+-library tech13g [all_inputs]
+# Specifies that the cell INV2 from a library tech13g is
+# the driving cell for all inputs.
+set_driving_cell -lib_cell BUFFD4 -library tech90gwc \
+[get_ports {testmode[3]}]
+# The input testmode[3] is driven by a BUFFD4 cell
+# from library tech90gwc.
+```
+
+##### Input Transition
+
+```tcl
+set_input_transition 0.85 [get_ports INPC]
+# Specifies an input transition of 850ps on port INPC.
+set_input_transition 0.6 [all_inputs]
+# Specifies a transition of 600ps on all input ports.
+set_input_transition 0.25 [get_ports SD_DIN*]
+# Specifies a transition of 250ps on all ports with
+# pattern SD_DIN*.
+# Min and max values can optionally be specified using
+# the -min and -max options.
+```
+
+##### Capacitive Load
+
+```tcl
+set_load 5 [get_ports OUTX]
+# Places a 5pF load on output port OUTX.
+set_load 25 [all_outputs]
+# Sets 25pF load capacitance on all outputs.
+set_load -pin_load 0.007 [get_ports {shift_write[31]}]
+# Place 7fF pin load on the specified output port.
+# A load on the net connected to the port can be
+# specified using the -wire_load option.
+# If neither -pin_load nor -wire_load option is used,
+# the default is the -pin_load option.
+```
+
+The unit is defined in the library, usually picofarads.
+
+##### Design Rule Checks
+
+```tcl
+set_max_transition 0.6 IOBANK
+# Sets a limit of 600ps on IOBANK.
+set_max_capacitance 0.5 [current_design]
+# Max capacitance is set to 0.5pf on all nets in
+# current design.
+```
+
+![[drc_example.png]]
+
+for N1,
+
+``` tcl
+max capacitance = 0.03+0.02+0.07+0.05 = 0.17 pF
+max_transition = cap*rise_resistance = 0.17*1=0.17 ns
+```
+
+for N2,
+
+``` tcl
+max capacitance = 0.04+0.03 = 0.07 pF
+max_transition = cap*input_drive = 0.07*2=0.14 ns
+```
+
+### 7.9 Virtual Clock
+
+![[virtual_clock.png]]
+
+The clock driving input port ROW_IN is CLK_SAD, which is not drived to DUA, the constraint of `set_input_delay` must have a reference clock.
+
+```tcl
+create_clock -name VIRTUAL_CLK_SAD -period 10 -waveform {2 8}
+create_clock -name VIRTUAL_CLK_CFG -period 8 \
+-waveform {0 4}
+create_clock -period 10 [get_ports CLK_CORE]
+```
+
+```tcl
+set_input_delay -clock VIRTUAL_CLK_SAD -max 2.7 \
+[get_ports ROW_IN]
+set_output_delay -clock VIRTUAL_CLK_CFG -max 4.5 \
+[get_ports STATE_O]
+```
+
+Where the available time for input path in DUA is 10-2-2.7=5.3ns
+
+### 7.10 Refining the Timing Analysis
+
+-  `set_case_analysis`: Specifies constant value on a pin of a cell, or on an input port.
+-  `set_disable_timing`: Breaks a timing arc of a cell.
+-  `set_false_path`: Specifies paths that are not real which implies that these paths are not checked in STA
+-  `set_multicycle_path`: Specifies paths that can take longer than one clock cycle.
+
+##### `set_case_analysis`
+
+It is normally used for DFT design, which is specified to switch between test mode and functional mode.
+
+```tcl
+set_case_analysis 0 TEST
+set_case_analysis 0 [get_ports {testmode[3]}]
+set_case_analysis 0 [get_ports {testmode[2]}]
+set_case_analysis 0 [get_ports {testmode[1]}]
+set_case_analysis 0 [get_ports {testmode[0]}]
+```
+
+It will not analyze the paths that are irrelevant.
+
+```tcl
+set_case_analysis 1 func_mode[0]
+set_case_analysis 0 func_mode[1]
+set_case_analysis 1 func_mode[2]
+```
+
+Used for clock selecting:
+
+```tcl
+set_case_analysis 1 UCORE/UMUX0/CLK_SEL[0]
+set_case_analysis 1 UCORE/UMUX1/CLK_SEL[1]
+set_case_analysis 0 UCORE/UMUX2/CLK_SEL[2]
+```
+
+##### `set_disable_timing`
+
+![[disable_timing.png]]
+
+```tcl
+set_disable_timing -from S -to Z [get_cells UMUX0]
+```
+
+The path from S to Z is not a timing path.
+
+It will remove all timing paths throught the pin.
+
+#### 7.11 Point to Point Specification
+
+```tcl
+set_max_delay 5.0 -to UFF0/D
+# All paths to D-pin of flip-flop should take 5ns max.
+set_max_delay 0.6 -from UFF2/Q -to UFF3/D
+# All paths between the two flip-flops should take a
+# max of 600ps.
+set_max_delay 0.45 -from UMUX0/Z -through UAND1/A -to UOR0/Z
+# Sets max delay for the specified paths.
+set_min_delay 0.15 -from {UAND0/A UXOR1/B} -to {UMUX2/SEL}
+```
+
+Between clocks:
+
+```tcl
+set_max_delay 1.2 -from [get_clocks SYS_CLK] \
+-to [get_clocks CFG_CLK]
+# All paths between these two clock domains are restricted
+# to a max of 1200ps.
+set_min_delay 0.4 -from [get_clocks SYS_CLK] \
+-to [get_clocks CFG_CLK]
+# The min delay between any path between the two
+# clock domains is specified as 400ps.
+```
+
+## Ch.8 Timing Verification
+
+==The worst-case slow condition is critical for setup checks.==
+
+==The best-case fast condition is critical for hold checks.==
+
+### 8.1 Setup Timing Check
+
+![[set_up_check.png]]
+
+==Setup Check==:
+
+$$T_{launch}+T_{ck2q}+T_{dq}<T_{capture}+T_{cycle}-T_{setup}$$
+The setup check poses a max constraint, so it always uses the longest or the max timing path.
+
+This check is normally verified at the slow corner where the delays are the largest.
+
+### 8.2 Hold Timing Check
+
+![[hold_check.png]]
+
+==Hold Check==:
+
+$$T_{launch}+T_{ck2q}+T_{dp}>T_{capture}+T_{hold}$$
+
+The hold check imposes a lower bound or min constraint for paths, it always uses the shortest or the min timing path.
+
+The hold checks are typically performed at the fast timing corner.
+
+A hold timing check ensures that
+
+-  Data from the subsequent launch edge must not be captured by the setup receiving edge.
+-  Data from the setup launch edge must not be captured by the preceding receiving edge.
+
+![[hold_rule.png]]
+
+These two checks are essentially the same when the launch clock and the capture clock belong to the same clock domain, while it is different for different clocks.
+
+
+### 8.3 Multicycle Path
+
+The following for setup checks:
+
+```tcl
+create_clock -name CLKM -period 10 [get_ports CLKM]
+set_multicycle_path 3 -setup \
+-from [get_pins UFF0/Q] \
+-to [get_pins UFF1/D]
+```
+
+![[multicycle_setup.png]]
+
+The following for hold checks:
+
+```tcl
+set_multicycle_path 2 -hold -from [get_pins UFF0/Q] \
+-to [get_pins UFF1/D]
+```
+
+![[multicycle_hold.png]]
+
+The default hold check is done on the active edge prior to the setup capture edge which is not the intent.
+
+
 
 
 ##### PVT Corners
