@@ -1532,6 +1532,59 @@ set_multicycle_path 2 -hold -from [get_pins UFF0/Q] \
 
 The default hold check is done on the active edge prior to the setup capture edge which is not the intent.
 
+> In most designs, a multicycle setup specified as N (cycles) should be accompanied by a multicycle hold constraint specified as N-1 (cycles).
+
+The following is specified for clocks.
+
+![[multicycle_async.png]]
+
+```tcl
+set_multicycle_path 4 -setup \
+-from [get_clocks CLKM] -to [get_clocks CLKP] -end
+set_multicycle_path 3 -hold \
+-from [get_clocks CLKM] -to [get_clocks CLKP] -end
+```
+
+![[multicycle_2.png]]
+
+```tcl
+set_multicycle_path 2 -setup \
+-from [get_clocks CLKP] -to [get_clocks CLKM] -start
+set_multicycle_path 1 -hold \
+-from [get_clocks CLKP] -to [get_clocks CLKM] -start
+# The -start option refers to the launch clock and is
+# the default for a multicycle hold.
+```
+
+`start` is default for a multicycle hold, where `end` is default for a multicycle setup.
+
+### 8.4 False Paths
+
+Too many false paths which are wildcarded using the through specification can slow down the analysis.
+
+```tcl
+set_false_path -from [get_clocks SCAN_CLK] \
+-to [get_clocks CORE_CLK]
+# Any path starting from the SCAN_CLK domain to the
+# CORE_CLK domain is a false path.
+set_false_path -through [get_pins UMUX0/S]
+# Any path going through this pin is false.
+set_false_path \
+-through [get_pins SAD_CORE/RSTN]]
+# The false path specifications can also be specified to,
+# through, or from a module pin instance.
+set_false_path -to [get_ports TEST_REG*]
+# All paths that end in port named TEST_REG* are false paths.
+set_false_path -through UINV/Z -through UAND0/Z
+# Any path that goes through both of these pins
+# in this order is false.
+```
+
+Recommendations:
+
+-  minimize the usage of -through options
+-  not to use a false path when a multicycle path is the real intent
+
 
 
 
