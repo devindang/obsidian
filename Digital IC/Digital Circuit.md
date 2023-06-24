@@ -89,3 +89,8 @@ refs: https://forum.allaboutcircuits.com/threads/number-of-cmos-transistors-requ
 The Moore state machine is one where the outputs depend only on the internal present state. 
 
 The Mealy state machine is one where the outputs depend on both the internal present state and on the inputs. 
+
+### Logic
+
+$J=\bar{A}\bar{B}C+\bar{A}B\bar{C}+A\bar{B}\bar{C}+ABC=A\XOR B\XOR C$
+
