@@ -23,16 +23,12 @@
 		{"type":"text","text":"Reset","id":"f8679a644f22741e","x":270,"y":1750,"width":250,"height":60,"color":"4"},
 		{"type":"text","text":"Clock","id":"83faee9ff5b22641","x":270,"y":1970,"width":250,"height":60},
 		{"type":"text","text":"CDC","id":"30c4d7dcd4a684b8","x":270,"y":1860,"width":250,"height":60,"color":"1"},
-		{"type":"text","text":"Glitch-free","id":"8daaa43f00f17f5a","x":610,"y":1940,"width":250,"height":60},
-		{"type":"text","text":"frequency division","id":"2d614d9b9a2d8368","x":610,"y":2030,"width":250,"height":60},
-		{"type":"text","text":"Odd - Even","id":"2f3ab62b5ae976da","x":960,"y":2000,"width":250,"height":60},
-		{"type":"text","text":"Fractional","id":"853c289ca14b5c86","x":960,"y":2089,"width":250,"height":60},
 		{"type":"text","text":"Design Methodology","id":"7c2d185dd51715fa","x":-140,"y":1860,"width":250,"height":60},
-		{"id":"e2e140525f0a5f8b","x":1000,"y":1560,"width":250,"height":60,"type":"text","text":"Standard Cell"},
-		{"id":"133830697a0f81e0","x":1000,"y":1650,"width":250,"height":60,"type":"text","text":"Crosstalk"},
+		{"type":"text","text":"Standard Cell","id":"e2e140525f0a5f8b","x":1000,"y":1560,"width":250,"height":60},
+		{"type":"text","text":"Crosstalk","id":"133830697a0f81e0","x":1000,"y":1650,"width":250,"height":60},
 		{"type":"text","text":"Design","id":"9d09b5e9ef7f4b40","x":700,"y":1160,"width":250,"height":60},
-		{"id":"e84c7ee7575ae58d","x":1060,"y":1100,"width":250,"height":60,"type":"text","text":"VHDL"},
-		{"id":"dd8868466d595321","x":1060,"y":1190,"width":250,"height":60,"type":"text","text":"Verilog HDL"},
+		{"type":"text","text":"VHDL","id":"e84c7ee7575ae58d","x":1060,"y":1100,"width":250,"height":60},
+		{"type":"text","text":"Verilog HDL","id":"dd8868466d595321","x":1060,"y":1190,"width":250,"height":60},
 		{"type":"text","text":"[[Xilinx Design Constraint | XDC]]","id":"43bf8ede83ea4291","x":575,"y":80,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"[[Xilinx Vivado Skills | Vivado Skills]]","id":"6ee9cd59349b8eb3","x":575,"y":180,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"Xilinx Vivado","id":"952833ea31a58249","x":235,"y":110,"width":250,"height":60,"color":"6"},
@@ -44,7 +40,12 @@
 		{"type":"text","text":"CHI","id":"7280dfe0f20717b3","x":1060,"y":780,"width":250,"height":60},
 		{"type":"text","text":"Comm Algorithm","id":"91cd19ddc3331e1d","x":-140,"y":-240,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"Filter Design","id":"6d436ff3c4952b62","x":235,"y":-300,"width":250,"height":60,"color":"6"},
-		{"id":"397bf037204fa2d2","x":235,"y":-180,"width":250,"height":60,"type":"text","text":"OFDM"}
+		{"type":"text","text":"OFDM","id":"397bf037204fa2d2","x":235,"y":-180,"width":250,"height":60},
+		{"type":"text","text":"Odd - Even","id":"2f3ab62b5ae976da","x":1000,"y":2060,"width":250,"height":60},
+		{"type":"text","text":"Fractional","id":"853c289ca14b5c86","x":1000,"y":2149,"width":250,"height":60},
+		{"type":"text","text":"frequency division","id":"2d614d9b9a2d8368","x":650,"y":2090,"width":250,"height":60},
+		{"type":"text","text":"Glitch-free","id":"8daaa43f00f17f5a","x":650,"y":2000,"width":250,"height":60},
+		{"id":"c57e0a69c1884409","x":650,"y":1910,"width":250,"height":60,"type":"text","text":"clock character"}
 	],
 	"edges":[
 		{"id":"a4bcda4b983539b1","fromNode":"aa60562589cac33f","fromSide":"right","toNode":"91cd19ddc3331e1d","toSide":"left"},
@@ -90,6 +91,7 @@
 		{"id":"648832c9c8622238","fromNode":"94f27f3d83616212","fromSide":"right","toNode":"133830697a0f81e0","toSide":"left"},
 		{"id":"e22f9d6f905360dd","fromNode":"9d09b5e9ef7f4b40","fromSide":"right","toNode":"e84c7ee7575ae58d","toSide":"left"},
 		{"id":"1fa33df32f784967","fromNode":"9d09b5e9ef7f4b40","fromSide":"right","toNode":"dd8868466d595321","toSide":"left"},
-		{"id":"a0111271d475e882","fromNode":"91cd19ddc3331e1d","fromSide":"right","toNode":"397bf037204fa2d2","toSide":"left"}
+		{"id":"a0111271d475e882","fromNode":"91cd19ddc3331e1d","fromSide":"right","toNode":"397bf037204fa2d2","toSide":"left"},
+		{"id":"1721ad97529b7bc2","fromNode":"83faee9ff5b22641","fromSide":"right","toNode":"c57e0a69c1884409","toSide":"left"}
 	]
 }
