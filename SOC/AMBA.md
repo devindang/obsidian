@@ -16,3 +16,13 @@ The ==Access phase== of the write transfer is shown at T2 in Figure 3-1 where PE
 
 PREADY can take any value when PENABLE is LOW. This ensures that peripherals that have a fixed ==two cycle access== can tie PREADY HIGH.
 
+Control Signal Backpressure 控制信号反压
+
+https://www.intel.cn/content/www/cn/zh/docs/programmable/683353/21-3/control-signal-backpressure.html
+
+APB
+https://zhuanlan.zhihu.com/p/623829190
+
+覆盖率
+https://blog.csdn.net/fucong59/article/details/122129450
+
