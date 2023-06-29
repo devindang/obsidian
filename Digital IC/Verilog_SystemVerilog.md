@@ -120,45 +120,22 @@ Output for ==fork ... join_none==
 
 ### Singed? Unsigned? For a RHS
 
-#### Case 1: integer <= unsigned + singed
+RULES:
 
-```verilog
-`timescale 1ns/1ps
+> ***Expression type depends only on the operands. It does not depend on the left-hand side (if any).***
 
-module test();
+- Decimal numbers are signed. (eg. +1, +2)
+- Based_numbers are unsigned, except where the s notation is used in the base specifier (as in "4'sd12").
+- Bit-select results are unsigned, regardless of the operands.
+- Part-select results are unsigned, regardless of the operands even if the part-select specifies the entire vector.
+- Concatenate results are unsigned, regardless of the operands.
+- Comparison results (1, 0) are unsigned, regardless of the operands.
+- If ==any operand is unsigned==, the result is unsigned, regardless of the operator.
+- If all operands are signed, the result will be signed, regardless of operator, except when specified otherwise.
 
-reg  signed     [3:0]   din1;
-reg             [3:0]   din2;
-wire integer    [3:0]   dout;
+## Implication in SV
 
-initial begin
-    din1    <=  -5;
-    din2    <=  2;
-end
-
-assign dout = din1+din2;
-
-endmodule
-```
-
-The `dout` would be 13.
-
-> As long as there is `unsigned` in the RHS, the operation is treated as unsigned.
-
-#### Case 2: singed <= unsigned + singed
-
-```verilog
-wire signed  [3:0]   dout;
-```
-
-The `dout` would be -3.
-
-#### Case 3: undefined <= unsigned + singed
-
-```verilog
-wire         [3:0]   dout;
-```
-
-The `dout` would be -3. It will be treated as singed as if there is at least one `singed` as the RHS.
-
+https://stackoverflow.com/questions/33202191/what-is-the-difference-between-and-in-system-verilog-assertions
+例题
+[[实习&秋招笔面试题目汇总#华为2023秋招 1 2022/10#21]]
 

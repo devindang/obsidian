@@ -20,10 +20,6 @@
 		{"type":"text","text":"SOC","id":"64c688a9f0368a72","x":-140,"y":620,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"Cache","id":"86dcbb7c2f8da729","x":700,"y":810,"width":250,"height":60},
 		{"type":"text","text":"pipelined","id":"a2e883fae57d80ba","x":700,"y":900,"width":250,"height":60},
-		{"type":"text","text":"Reset","id":"f8679a644f22741e","x":270,"y":1750,"width":250,"height":60,"color":"4"},
-		{"type":"text","text":"Clock","id":"83faee9ff5b22641","x":270,"y":1970,"width":250,"height":60,"color":"6"},
-		{"type":"text","text":"CDC","id":"30c4d7dcd4a684b8","x":270,"y":1860,"width":250,"height":60,"color":"4"},
-		{"type":"text","text":"Design Methodology","id":"7c2d185dd51715fa","x":-140,"y":1860,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"Standard Cell","id":"e2e140525f0a5f8b","x":1000,"y":1560,"width":250,"height":60},
 		{"type":"text","text":"Crosstalk","id":"133830697a0f81e0","x":1000,"y":1650,"width":250,"height":60},
 		{"type":"text","text":"Design","id":"9d09b5e9ef7f4b40","x":700,"y":1160,"width":250,"height":60,"color":"6"},
@@ -41,12 +37,19 @@
 		{"type":"text","text":"Comm Algorithm","id":"91cd19ddc3331e1d","x":-140,"y":-240,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"Filter Design","id":"6d436ff3c4952b62","x":235,"y":-300,"width":250,"height":60},
 		{"type":"text","text":"OFDM","id":"397bf037204fa2d2","x":235,"y":-180,"width":250,"height":60},
-		{"type":"text","text":"Odd - Even","id":"2f3ab62b5ae976da","x":1000,"y":2060,"width":250,"height":60},
-		{"type":"text","text":"Fractional","id":"853c289ca14b5c86","x":1000,"y":2149,"width":250,"height":60},
-		{"type":"text","text":"frequency division","id":"2d614d9b9a2d8368","x":650,"y":2090,"width":250,"height":60},
-		{"type":"text","text":"Glitch-free","id":"8daaa43f00f17f5a","x":650,"y":2000,"width":250,"height":60},
-		{"type":"text","text":"clock character","id":"c57e0a69c1884409","x":650,"y":1910,"width":250,"height":60,"color":"6"},
-		{"id":"64cc441d5daf07d1","x":1000,"y":1750,"width":250,"height":60,"color":"6","type":"text","text":"Timing check"}
+		{"id":"64cc441d5daf07d1","x":1000,"y":1750,"width":250,"height":60,"color":"6","type":"text","text":"Timing check"},
+		{"type":"text","text":"Odd - Even","id":"2f3ab62b5ae976da","x":1000,"y":2360,"width":250,"height":60},
+		{"type":"text","text":"Fractional","id":"853c289ca14b5c86","x":1000,"y":2449,"width":250,"height":60},
+		{"type":"text","text":"frequency division","id":"2d614d9b9a2d8368","x":650,"y":2390,"width":250,"height":60},
+		{"type":"text","text":"Glitch-free","id":"8daaa43f00f17f5a","x":650,"y":2300,"width":250,"height":60},
+		{"type":"text","text":"clock character","id":"c57e0a69c1884409","x":650,"y":2210,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"Design Methodology","id":"7c2d185dd51715fa","x":-140,"y":2160,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"CDC","id":"30c4d7dcd4a684b8","x":270,"y":2160,"width":250,"height":60,"color":"4"},
+		{"type":"text","text":"Clock","id":"83faee9ff5b22641","x":270,"y":2270,"width":250,"height":60,"color":"6"},
+		{"type":"text","text":"Reset","id":"f8679a644f22741e","x":270,"y":2040,"width":250,"height":60,"color":"4"},
+		{"id":"20bf08d0f910ef8c","x":610,"y":1750,"width":250,"height":60,"type":"text","text":"CMOS"},
+		{"id":"ba98806a63e600b4","x":610,"y":1860,"width":250,"height":60,"type":"text","text":"bipolar"},
+		{"id":"e6e59e7e430743bb","x":270,"y":1800,"width":250,"height":60,"type":"text","text":"Proccess"}
 	],
 	"edges":[
 		{"id":"a4bcda4b983539b1","fromNode":"aa60562589cac33f","fromSide":"right","toNode":"91cd19ddc3331e1d","toSide":"left"},
@@ -94,6 +97,9 @@
 		{"id":"1fa33df32f784967","fromNode":"9d09b5e9ef7f4b40","fromSide":"right","toNode":"dd8868466d595321","toSide":"left"},
 		{"id":"a0111271d475e882","fromNode":"91cd19ddc3331e1d","fromSide":"right","toNode":"397bf037204fa2d2","toSide":"left"},
 		{"id":"1721ad97529b7bc2","fromNode":"83faee9ff5b22641","fromSide":"right","toNode":"c57e0a69c1884409","toSide":"left"},
-		{"id":"0ebc35a130facc81","fromNode":"94f27f3d83616212","fromSide":"right","toNode":"64cc441d5daf07d1","toSide":"left"}
+		{"id":"0ebc35a130facc81","fromNode":"94f27f3d83616212","fromSide":"right","toNode":"64cc441d5daf07d1","toSide":"left"},
+		{"id":"cf1f01a23048e3db","fromNode":"ed76728bb2b9c440","fromSide":"right","toNode":"e6e59e7e430743bb","toSide":"left"},
+		{"id":"6080a7589d065ac2","fromNode":"e6e59e7e430743bb","fromSide":"right","toNode":"20bf08d0f910ef8c","toSide":"left"},
+		{"id":"33623bd80bdb00f2","fromNode":"e6e59e7e430743bb","fromSide":"right","toNode":"ba98806a63e600b4","toSide":"left"}
 	]
 }
