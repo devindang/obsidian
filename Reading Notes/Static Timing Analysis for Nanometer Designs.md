@@ -1201,6 +1201,36 @@ set_input_delay -clock CLKA -max [expr Tclk2q + Tc1] \
 -  available setup time slow corner: 15-6.7=8.3ns
 -  available setup time fast corner: 15-3=12ns
 
+> input_delay max = Tclk2q_{max} + Tc1_{max}
+> input_delay min = Tclk2q_{min} + Tc1_{min}
+
+> 一般经验值 input_delay max 设置为采样时钟的70%，min设置为采样时钟的30%。这个范围指定了外部输入可以变化的范围，这个范围越大，允许数据变化的范围越大，对外部的时序要求越宽松，对内部时序分析越紧。
+
+> ***set_input_delay是说该输入信号是在时钟沿后多长时间到达模块的port上的 。***
+> ***set_output_delay是说该输出信号在后级模块中需要在时钟沿之前提前多长时间准备好。***
+
+https://blog.csdn.net/zyn1347806/article/details/108649518
+
+> - input_delay 和 output_delay 约束是从 clk 到 ports 的约束
+> - clk 对于 input_delay 而言，是发起时钟，对于 output_delay 而言，是采样时钟，都不是DUT内部寄存器的CK端
+> - 如果输入数据的驱动是外部时钟，而不是DUT的时钟，可以使用虚拟时钟 [[Static Timing Analysis for Nanometer Designs#7.9 Virtual Clock]]
+
+![[input_delay_fpga.png]]
+
+The input delay values for the both types of analysis are:
+
+```
+Input Delay(max) = Tco(max) + Ddata(max) + Dclock_to_ExtDev(max) - Dclock_to_FPGA(min)
+Input Delay(min) = Tco(min) + Ddata(min) + Dclock_to_ExtDev(min) - Dclock_to_FPGA(max)
+```
+
+The following figure shows a simple example of input delay constraints for both setup (max) and hold (min) analysis, assuming the `sysClk` clock has already been defined on the `CLK` port:
+
+```
+set_input_delay -max -clock sysClk 5.4 [get_ports DIN]
+set_input_delay -min -clock sysClk 2.1 [get_ports DIN]
+```
+
 ### 7.5 Constraining Output Paths
 
 `output_delay` is specified for the output of the Flip-Flop in DUA with respect to the external ==Capture Clock==.
@@ -1232,6 +1262,35 @@ set_input_delay 25 -max -clock MCLK [get_ports DATAIN]
 set_input_delay 5 -min -clock MCLK [get_ports DATAIN]
 set_output_delay 20 -max -clock MCLK [get_ports DATAOUT]
 set_output_delay -5 -min -clock MCLK [get_ports DATAOUT]
+```
+
+> output_delay max = Tc2_{max} + T_{setup}
+> output_delay min = Tc2_{min} - T_{hold}
+
+> output_delay max 实际上也限定了信号可以改变的范围，同时需要保持稳定的范围也确定了，在采样时钟边沿处，数据应该==保持稳定==。
+
+> ***set_input_delay是说该输入信号是在时钟沿后多长时间到达模块的port上的 。***
+> ***set_output_delay是说该输出信号在后级模块中需要在时钟沿之前提前多长时间准备好。***
+
+
+![[input_output_delay.png]]
+
+XIlinx
+
+![[output_delay_fpga.png]]
+
+The output delay values for the both types of analysis are:
+
+```
+Output Delay(max) = Tsetup + Ddata(max) + Dclock_to_FPGA(max) - Dclock_to_ExtDev(min)
+Output Delay(min) = Ddata(min) - Thold + Dclock_to_FPGA(min) - Dclock_to_ExtDev(max)
+```
+
+The following figure shows a simple example of output delay constraints for both setup (max) and hold (min) analysis, assuming the `sysClk` clock has already been defined on the `CLK` port:
+
+```
+set_output_delay -max -clock sysClk 2.4 [get_ports DOUT]
+set_output_delay -min -clock sysClk -1.1 [get_ports DOUT]
 ```
 
 ### 7.6 Timing Path Groups
@@ -1585,7 +1644,9 @@ Recommendations:
 -  minimize the usage of -through options
 -  not to use a false path when a multicycle path is the real intent
 
+## Ch.9 Interface Analysis
 
+### 9.1 
 
 
 ##### PVT Corners
