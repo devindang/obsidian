@@ -118,9 +118,38 @@ Output for ==fork ... join_none==
 
 ## Singed Unsigned
 
-### Singed? Unsigned? For a RHS
+### Self-determined vs. Nonself-determined
 
-RULES:
+A self-determined expression is one where the bit length of the expression is solely determined by the expression itself—for example, an expression representing a delay value.
+
+```verilog
+reg [3:0] a;
+reg [5:0] b;
+reg [15:0] c;
+
+initial begin
+    a = 4'hF;
+    b = 6'hA;
+    $display("a*b=%h",a*b); // expression size is self-determined
+    c = {a*b};              // expression a**b is self-determined
+                            // due to concatenation operator {}
+    $display("c=%h",c);
+    c = a*b;                // expression size is determined by c
+    $display("c=%h",c);
+end
+```
+The output is
+```verilog
+# a*b=16
+# c=0016
+# c=0096
+```
+
+where, `c={a*b}` is self-determined due to the concatenation operator {}, it is not determed by the left hand side.
+
+The expression `c=a*b` is nonself-determined, the expression size is determined not only by the operands but also the other part.
+
+### RULES
 
 > ***Expression type depends only on the operands. It does not depend on the left-hand side (if any).***
 
