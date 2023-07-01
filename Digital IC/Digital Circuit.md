@@ -34,6 +34,12 @@ refs: https://forum.allaboutcircuits.com/threads/number-of-cmos-transistors-requ
 
 ![[full_adder.png]]
 
+Another expression:
+
+> $\sum=(A \xor B) \xor C$
+> $C_{out}=AB+(A+B)C$
+> $C_{out}=C_g+C_p C_{in}$, where, $C_g=AB$, $C_p=A+B$
+
 3. Multiplexer
 
 ![[MUX4.png]]
