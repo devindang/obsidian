@@ -23,6 +23,9 @@ A ==CLB== contains 2 Slices.
 
 ### LUT
 
+k 输入的LUT，可以实现 $2^{2^k}$ 种逻辑函数。
+https://blog.csdn.net/weiaipan1314/article/details/104317186
+
 https://www.logic-fruit.com/blog/fpga/lut-in-fpga/
 
 ### Flip Flop
