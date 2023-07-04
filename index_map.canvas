@@ -38,9 +38,9 @@
 		{"type":"text","text":"DMA","id":"e71c3ba3dbf1ff37","x":313,"y":280,"width":250,"height":60},
 		{"type":"text","text":"[[Xilinx Design Constraint | XDC]]","id":"43bf8ede83ea4291","x":563,"y":-280,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"[[Xilinx Vivado Skills | Vivado Skills]]","id":"6ee9cd59349b8eb3","x":563,"y":-180,"width":250,"height":60,"color":"6"},
-		{"id":"a0c482c818c53019","x":223,"y":-120,"width":250,"height":60,"type":"text","text":"FPGA arch"},
+		{"type":"text","text":"FPGA arch","id":"a0c482c818c53019","x":223,"y":-120,"width":250,"height":60},
 		{"type":"text","text":"Xilinx Vivado","id":"952833ea31a58249","x":223,"y":-240,"width":250,"height":60,"color":"6"},
-		{"id":"edb6d162a2e424ce","x":223,"y":-10,"width":250,"height":60,"color":"5","type":"text","text":"FPGA principle"},
+		{"type":"text","text":"FPGA principle","id":"edb6d162a2e424ce","x":223,"y":-10,"width":250,"height":60,"color":"5"},
 		{"type":"text","text":"APB","id":"1ffc9531e6791647","x":1048,"y":220,"width":250,"height":60},
 		{"type":"text","text":"AHB","id":"8609fc4c20b2c918","x":1048,"y":310,"width":250,"height":60},
 		{"type":"text","text":"AHB-Lite","id":"948a1671305f0ee3","x":1048,"y":390,"width":250,"height":60},
@@ -58,7 +58,15 @@
 		{"type":"text","text":"linux","id":"f9506f9ebd4b5215","x":-152,"y":-790,"width":250,"height":60},
 		{"type":"text","text":"SOC","id":"64c688a9f0368a72","x":-152,"y":390,"width":250,"height":60,"color":"6"},
 		{"type":"text","text":"Storage","id":"7622f2af0cdd0bb4","x":313,"y":760,"width":250,"height":60},
-		{"id":"957b6be68f7f27bf","x":313,"y":900,"width":250,"height":60,"type":"text","text":"Interface"}
+		{"type":"text","text":"Interface","id":"957b6be68f7f27bf","x":313,"y":900,"width":250,"height":60},
+		{"type":"text","text":"Static Timing Analysis for Nanometer Designs","id":"94a8ccae0db01ae4","x":390,"y":2760,"width":310,"height":60},
+		{"id":"734103e2cde805c5","x":390,"y":2850,"width":310,"height":60,"type":"text","text":"Constraining Design for Synthesis and Timing Analysis"},
+		{"type":"text","text":"Synopsys DC workshop lab guide","id":"53a617f626b865f9","x":390,"y":2940,"width":310,"height":60},
+		{"type":"text","text":"DC和STA","id":"a1e6d5eb3b8ca02e","x":40,"y":2850,"width":250,"height":60},
+		{"type":"text","text":"Low Power Methodology Manual for SOC Design","id":"934f815e21bf3b36","x":390,"y":3060,"width":310,"height":60},
+		{"type":"text","text":"低功耗","id":"b54c70d804b30a65","x":40,"y":3060,"width":250,"height":60},
+		{"type":"text","text":"perl","id":"2c81873856b49ab7","x":40,"y":3180,"width":250,"height":60},
+		{"type":"text","text":"cortex m0","id":"78af8a545109e2d9","x":40,"y":3300,"width":250,"height":60}
 	],
 	"edges":[
 		{"id":"a4bcda4b983539b1","fromNode":"aa60562589cac33f","fromSide":"right","toNode":"91cd19ddc3331e1d","toSide":"left"},
@@ -118,6 +126,10 @@
 		{"id":"ee6b9bca611fef69","fromNode":"f9506f9ebd4b5215","fromSide":"right","toNode":"49be21d195bd63b0","toSide":"left"},
 		{"id":"35e54fc6a683539e","fromNode":"2ce9146d664d28b7","fromSide":"right","toNode":"a0c482c818c53019","toSide":"left"},
 		{"id":"5083c8ef4256fab3","fromNode":"2ce9146d664d28b7","fromSide":"right","toNode":"edb6d162a2e424ce","toSide":"left"},
-		{"id":"59ef311125e5d4fd","fromNode":"64c688a9f0368a72","fromSide":"right","toNode":"957b6be68f7f27bf","toSide":"left"}
+		{"id":"59ef311125e5d4fd","fromNode":"64c688a9f0368a72","fromSide":"right","toNode":"957b6be68f7f27bf","toSide":"left"},
+		{"id":"8896600bd7bc4ec3","fromNode":"a1e6d5eb3b8ca02e","fromSide":"right","toNode":"94a8ccae0db01ae4","toSide":"left"},
+		{"id":"30d95ce378269ea3","fromNode":"a1e6d5eb3b8ca02e","fromSide":"right","toNode":"734103e2cde805c5","toSide":"left"},
+		{"id":"7c6c1ca0d4aa3cf5","fromNode":"a1e6d5eb3b8ca02e","fromSide":"right","toNode":"53a617f626b865f9","toSide":"left"},
+		{"id":"10194c523b46064c","fromNode":"b54c70d804b30a65","fromSide":"right","toNode":"934f815e21bf3b36","toSide":"left"}
 	]
 }
