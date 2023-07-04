@@ -2,6 +2,17 @@
 
 Generally speaking, CMOS transistors are preferred for low-power, high-noise-immunity, and high-integration-density applications, while bipolar transistors are preferred for high-speed, high-gain, and high-linearity applications.
 
+![[CMOS_symbol.png]]
+
+![[CMOS_inverter.png]]
+
+![[dynamic_power.png]]
+Only during switching from high to low or from low to high, current is flowing for a very short time across both transistors .
+
+![[dynamic_power_1.png]]
+P = SCV^2f
+![[dynamic_losses.png]]
+
 ###  Universal Gate
 
 The universal gate is a NAND gate or NOR gate.
