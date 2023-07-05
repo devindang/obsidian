@@ -1,5 +1,8 @@
 #reserved 
 
+![[primetime.png]]
+
+![[digital_design_flow.png]]
 
 ## Ch.3 Standard Cell Library
 
@@ -931,6 +934,7 @@ Thus, if it's important for timing to match for critical signals, the routing mu
 
 A typical design comprises of various combinational and sequential cells. Here is an example to describe delay calculation.
 
+
 ![[delay_calc_example.png]]
 
 The library description of each cell specifies the pin capacitance values for each of the input pins. The standard libraries normally do not specify pin capacitances for cell outputs which is regarded as 0.
@@ -938,6 +942,12 @@ The library description of each cell specifies the pin capacitance values for ea
 Every ==net== in the design has a capacitance load which is the sum of the ==pin capacitance loads  of every fanouts== of the net plus ==any contribution from the interconnect==. 
 
 In this case, *NET0* has a net capacitance which is comprised of the input pin capacitance from *UAND1* and *UNOR2* cells. The output *O1* has the pin capacitance of the *UNOR2* cell plus any capacitive loading from the output of the blocks. The Input *I1* and *I2* has the pin capacitance corresponding to the *UAND1* and *UINV0* cells.
+
+Delay calculation (for a given process, temperature, and voltage conditions) performs the following activities:
+
+- Compute the ==delay== through specifi c gates, nets, net segments, paths, etc.
+- Compute the ==slew== at the output of specifi c gates.
+- Compute the ==slew degradation== as the signal passes through a wire (which in turn becomes the slew at the input pin of the next gate).
 
 #### 5.1.2 Delay Calculation with Interconnect
 

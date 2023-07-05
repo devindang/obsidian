@@ -111,3 +111,9 @@ The Mealy state machine is one where the outputs depend on both the internal pre
 
 $J=\bar{A}\bar{B}C+\bar{A}B\bar{C}+A\bar{B}\bar{C}+ABC=A\XOR B\XOR C$
 
+### Process
+
+45nm process: gate length, or channel length.
+https://www.quora.com/What-is-45nm-technology-in-MOSFET
+
+

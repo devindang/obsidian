@@ -60,13 +60,14 @@
 		{"type":"text","text":"Storage","id":"7622f2af0cdd0bb4","x":313,"y":760,"width":250,"height":60},
 		{"type":"text","text":"Interface","id":"957b6be68f7f27bf","x":313,"y":900,"width":250,"height":60},
 		{"type":"text","text":"Static Timing Analysis for Nanometer Designs","id":"94a8ccae0db01ae4","x":390,"y":2760,"width":310,"height":60},
-		{"id":"734103e2cde805c5","x":390,"y":2850,"width":310,"height":60,"type":"text","text":"Constraining Design for Synthesis and Timing Analysis"},
+		{"type":"text","text":"Constraining Design for Synthesis and Timing Analysis","id":"734103e2cde805c5","x":390,"y":2850,"width":310,"height":60},
 		{"type":"text","text":"Synopsys DC workshop lab guide","id":"53a617f626b865f9","x":390,"y":2940,"width":310,"height":60},
 		{"type":"text","text":"DC和STA","id":"a1e6d5eb3b8ca02e","x":40,"y":2850,"width":250,"height":60},
 		{"type":"text","text":"Low Power Methodology Manual for SOC Design","id":"934f815e21bf3b36","x":390,"y":3060,"width":310,"height":60},
 		{"type":"text","text":"低功耗","id":"b54c70d804b30a65","x":40,"y":3060,"width":250,"height":60},
 		{"type":"text","text":"perl","id":"2c81873856b49ab7","x":40,"y":3180,"width":250,"height":60},
-		{"type":"text","text":"cortex m0","id":"78af8a545109e2d9","x":40,"y":3300,"width":250,"height":60}
+		{"type":"text","text":"cortex m0","id":"78af8a545109e2d9","x":40,"y":3300,"width":250,"height":60,"color":"1"},
+		{"type":"text","text":"[[coding|coding]]","id":"53f4db0ebd0e36b6","x":40,"y":3420,"width":250,"height":60}
 	],
 	"edges":[
 		{"id":"a4bcda4b983539b1","fromNode":"aa60562589cac33f","fromSide":"right","toNode":"91cd19ddc3331e1d","toSide":"left"},
