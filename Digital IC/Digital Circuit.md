@@ -116,4 +116,4 @@ $J=\bar{A}\bar{B}C+\bar{A}B\bar{C}+A\bar{B}\bar{C}+ABC=A\XOR B\XOR C$
 45nm process: gate length, or channel length.
 https://www.quora.com/What-is-45nm-technology-in-MOSFET
 
-
+https://www.chemeurope.com/en/encyclopedia/45_nanometer.html
