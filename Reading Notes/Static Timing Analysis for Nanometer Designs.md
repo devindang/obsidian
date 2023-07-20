@@ -1445,6 +1445,8 @@ max_transition = cap*input_drive = 0.07*2=0.14 ns
 
 ### 7.9 Virtual Clock
 
+in some cases the user needs to constraint ports/pins in a block that has no clocks. In such cases, ports/ pins are assumed to be triggered by or dependent on clocks outside the block. To capture the characteristics of such ==off-block== or ==off-chip== clocks, designers use the concept of virtual clocks.
+
 ![[virtual_clock.png]]
 
 The clock driving input port ROW_IN is CLK_SAD, which is not drived to DUA, the constraint of `set_input_delay` must have a reference clock.

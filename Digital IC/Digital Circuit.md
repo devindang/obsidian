@@ -117,3 +117,7 @@ $J=\bar{A}\bar{B}C+\bar{A}B\bar{C}+A\bar{B}\bar{C}+ABC=A\XOR B\XOR C$
 https://www.quora.com/What-is-45nm-technology-in-MOSFET
 
 https://www.chemeurope.com/en/encyclopedia/45_nanometer.html
+
+Flip-Flop Schematic Explaination
+
+https://www.icdesigntips.com/2020/10/flip-flop-explanation.html
