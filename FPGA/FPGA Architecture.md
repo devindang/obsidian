@@ -87,4 +87,6 @@ $19\times25$ or $18\times26$ would take 2 DSP48 blocks to implementation.
 
 ![[dsp48.png]]
 
+### BRAM
 
+![[BRAM.png]]
